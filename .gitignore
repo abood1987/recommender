@@ -1,0 +1,17 @@
+*.pyc
+*.pyo
+._*
+.DS_Store
+*.env
+shared.env
+!shared_*.env
+.idea
+.run
+docs/_build
+node_modules
+package-lock.json
+secret_key.txt
+static
+!recommender/static
+!x_calendar/static
+venv
