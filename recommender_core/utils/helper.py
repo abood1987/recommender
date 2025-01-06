@@ -33,8 +33,10 @@ def get_llm_model() -> BaseMatcherModel:
     })
 
 
-def model_semantic_search(model, query: str, max_distance: float=0.45) -> QuerySet:
-    distance = CosineDistance("embedding", get_embedding_model().encode(query))
+def model_semantic_search(model, query: str | list[float], max_distance: float | None = None) -> QuerySet:
+    max_distance = max_distance or VECTOR_SETTINGS["max_distance"]
+    vector = get_embedding_model().encode(query) if isinstance(query, str) else query
+    distance = CosineDistance("embedding", vector)
     return (
         model.objects.annotate(distance=distance)
         .filter(distance__lte=max_distance)

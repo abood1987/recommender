@@ -1,65 +1,65 @@
-﻿Volunteer Name;Age;Gender;Skills;Availability;Location;Type of Organization
-John Smith;25;Male;Animal care, Customer service;Weekends;Delhi;Pet and Animal Service
-Sarah Johnson;30;Female;Healthcare, Communication;Weekdays;Mumbai;Healthcare
-Michael Brown;35;Male;Youth mentoring, Teaching;Flexible;Bangalore;Youth Development
-Emily Davis;22;Female;Event planning, Social media;Evenings;Chennai;Youth Development
-Daniel Wilson;28;Male;Data analysis, Fundraising;Weekdays;Kolkata;Healthcare
-Jessica Thompson;27;Female;Pet grooming, Photography;Weekends;Delhi;Pet and Animal Service
-Ryan Anderson;31;Male;First aid, Counseling;Flexible;Mumbai;Healthcare
-Olivia Martinez;24;Female;Tutoring, Leadership development;Weekdays;Bangalore;Youth Development
-Ethan Harris;29;Male;Graphic design, Marketing;Weekends;Chennai;Pet and Animal Service
-Ava Lewis;26;Female;Nursing, Elderly care;Weekdays;Kolkata;Healthcare
-Benjamin Wright;23;Male;Sports coaching, Team management;Evenings;Delhi;Youth Development
-Mia Turner;32;Female;Veterinary assistance, Animal rescue;Flexible;Mumbai;Pet and Animal Service
-Samuel Green;27;Male;Research, Lab assistance;Weekdays;Bangalore;Healthcare
-Lily Walker;25;Female;Mentoring, Community outreach;Weekends;Chennai;Youth Development
-Noah Turner;33;Male;Dog walking, Pet adoption;Weekdays;Kolkata;Pet and Animal Service
-Sophia Clark;28;Female;Nutrition, Health education;Flexible;Delhi;Healthcare
-James Evans;26;Male;Tutoring, Career guidance;Weekends;Mumbai;Youth Development
-Mia Hernandez;24;Female;Animal shelter volunteering;Weekdays;Bangalore;Pet and Animal Service
-Ethan Adams;29;Male;Medical coding, Administrative tasks;Weekdays;Chennai;Healthcare
-Harper Lewis;27;Female;Childcare, Mentoring;Flexible;Kolkata;Youth Development
-Oliver Wilson;27;Male;Environmental conservation, Gardening;Weekdays;Delhi;Pet and Animal Service
-Amelia Adams;31;Female;Counseling, Mental health support;Flexible;Mumbai;Healthcare
-Benjamin Cooper;24;Male;Leadership development, Sports coaching;Evenings;Bangalore;Youth Development
-Harper Turner;22;Female;Social media management, Event coordination;Weekends;Chennai;Youth Development
-Liam Thompson;28;Male;Veterinary assistance, Animal behavior;Flexible;Kolkata;Pet and Animal Service
-Emily Martinez;26;Female;Nursing, Medical assistance;Weekdays;Delhi;Healthcare
-Ethan Roberts;25;Male;Teaching, Youth mentoring;Weekends;Mumbai;Youth Development
-Sophia Harris;29;Female;Photography, Creative design;Flexible;Bangalore;Pet and Animal Service
-Lucas Davis;33;Male;First aid, Emergency response;Weekdays;Chennai;Healthcare
-Ava Turner;24;Female;Childcare, Tutoring;Evenings;Kolkata;Youth Development
-Noah Walker;27;Male;Environmental advocacy, Conservation;Weekdays;Delhi;Pet and Animal Service
-Isabella Anderson;30;Female;Medical research, Lab technician;Flexible;Mumbai;Healthcare
-Ethan Wilson;25;Male;Computer programming, Web development;Weekends;Bangalore;Youth Development
-Mia Johnson;28;Female;Animal rescue, Wildlife rehabilitation;Weekdays;Chennai;Pet and Animal Service
-Benjamin Turner;26;Male;Nutrition, Diet planning;Flexible;Kolkata;Healthcare
-Olivia Hernandez;29;Female;Mentoring, Career guidance;Weekends;Delhi;Youth Development
-Sophia Evans;23;Female;Data analysis, Statistical modeling;Weekdays;Mumbai;Healthcare
-Noah Lewis;32;Male;Event planning, Volunteer coordination;Flexible;Bangalore;Youth Development
-Ava Smith;27;Female;Wildlife conservation, Environmental education;Weekdays;Chennai;Pet and Animal Service
-James Adams;26;Male;Physical therapy, Rehabilitation;Weekends;Kolkata;Healthcare
-Mia Turner;24;Female;Art therapy, Special needs support;Evenings;Delhi;Youth Development
-Benjamin Martinez;29;Male;Digital marketing, Content creation;Weekdays;Mumbai;Pet and Animal Service
-Lily Thompson;30;Female;Clinical research, Data management;Flexible;Bangalore;Healthcare
-Ethan Walker;25;Male;Counseling, Crisis intervention;Weekends;Chennai;Youth Development
-Olivia Harris;27;Female;Gardening, Urban farming;Weekdays;Kolkata;Youth Development
-Ethan Wilson;31;Male;Public speaking, Advocacy;Evenings;Delhi;Pet and Animal Service
-Ava Roberts;24;Female;Teaching, English language tutoring;Weekends;Mumbai;Youth Development
-Benjamin Thompson;28;Male;Veterinary medicine, Animal surgery;Flexible;Bangalore;Pet and Animal Service
-Mia Davis;26;Female;Health education, Community outreach;Weekdays;Chennai;Healthcare
-Noah Turner;29;Male;Leadership training, Team building;Weekends;Kolkata;Youth Development
-Sophia Adams;23;Female;Graphic design, Visual communication;Flexible;Delhi;Pet and Animal Service
-James Cooper;32;Male;Nursing, Geriatric care;Weekdays;Mumbai;Healthcare
-Mia Hernandez;27;Female;Research, Data analysis;Evenings;Bangalore;Youth Development
-Ethan Walker;30;Male;Dog training, Animal behavior modification;Flexible;Chennai;Pet and Animal Service
-Olivia Thompson;26;Female;Occupational therapy, Rehabilitation;Weekdays;Kolkata;Healthcare
-Benjamin Adams;29;Male;Mentoring, Youth empowerment;Weekends;Delhi;Youth Development
-Ava Lewis;24;Female;Web development, Database management;Weekdays;Mumbai;Pet and Animal Service
-Noah Johnson;27;Male;Psychology, Mental health counseling;Flexible;Bangalore;Healthcare
-Sophia Wilson;31;Female;Event coordination, Volunteer management;Weekends;Chennai;Youth Development
-James Roberts;25;Male;Animal shelter volunteering, Pet adoption support;Weekdays;Kolkata;Pet and Animal Service
-Mia Davis;28;Female;Social work, Case management;Evenings;Delhi;Healthcare
-Benjamin Turner;29;Male;Teaching, Computer literacy;Weekends;Mumbai;Youth Development
-Olivia Martinez;23;Female;Environmental activism, Conservation;Flexible;Bangalore;Pet and Animal Service
-Ethan Harris;32;Male;Medical research, Data analysis;Weekdays;Chennai;Healthcare
+﻿Volunteer Name;Age;Gender;Skills;Availability;Location;Type of Organization;;state;city;country;zip
+John Smith;25;Male;Animal care, Customer service;Weekends;Delhi;Pet and Animal Service;;Vorarlberg;Linz;Austria;4662
+Sarah Johnson;30;Female;Healthcare, Communication;Weekdays;Mumbai;Healthcare;;NiederÃ¶sterreich;Linz;Austria;1654
+Michael Brown;35;Male;Youth mentoring, Teaching;Flexible;Bangalore;Youth Development;;NiederÃ¶sterreich;Wien;Austria;4988
+Emily Davis;22;Female;Event planning, Social media;Evenings;Chennai;Youth Development;;Burgenland;Sankt AndrÃ¤ im Lavanttal;Austria;4000
+Daniel Wilson;28;Male;Data analysis, Fundraising;Weekdays;Kolkata;Healthcare;;KÃ¤rnten;Linz;Austria;9979
+Jessica Thompson;27;Female;Pet grooming, Photography;Weekends;Delhi;Pet and Animal Service;;Salzburg;Feldkirchen;Austria;8017
+Ryan Anderson;31;Male;First aid, Counseling;Flexible;Mumbai;Healthcare;;Wien;StraÃŸburg;Austria;6874
+Olivia Martinez;24;Female;Tutoring, Leadership development;Weekdays;Bangalore;Youth Development;;OberÃ¶sterreich;Wien;Austria;3214
+Ethan Harris;29;Male;Graphic design, Marketing;Weekends;Chennai;Pet and Animal Service;;Salzburg;Steyr;Austria;3347
+Ava Lewis;26;Female;Nursing, Elderly care;Weekdays;Kolkata;Healthcare;;Wien;Linz;Austria;1154
+Benjamin Wright;23;Male;Sports coaching, Team management;Evenings;Delhi;Youth Development;;Vorarlberg;Linz;Austria;1716
+Mia Turner;32;Female;Veterinary assistance, Animal rescue;Flexible;Mumbai;Pet and Animal Service;;Steiermark;Linz;Austria;3276
+Samuel Green;27;Male;Research, Lab assistance;Weekdays;Bangalore;Healthcare;;Vorarlberg;Wien;Austria;2448
+Lily Walker;25;Female;Mentoring, Community outreach;Weekends;Chennai;Youth Development;;OberÃ¶sterreich;Linz;Austria;4200
+Noah Turner;33;Male;Dog walking, Pet adoption;Weekdays;Kolkata;Pet and Animal Service;;OberÃ¶sterreich;Murau;Austria;2143
+Sophia Clark;28;Female;Nutrition, Health education;Flexible;Delhi;Healthcare;;Wien;Wien;Austria;9314
+James Evans;26;Male;Tutoring, Career guidance;Weekends;Mumbai;Youth Development;;Tirol;Linz;Austria;2414
+Mia Hernandez;24;Female;Animal shelter volunteering;Weekdays;Bangalore;Pet and Animal Service;;OberÃ¶sterreich;Linz;Austria;4724
+Ethan Adams;29;Male;Medical coding, Administrative tasks;Weekdays;Chennai;Healthcare;;Salzburg;Eggenburg;Austria;4297
+Harper Lewis;27;Female;Childcare, Mentoring;Flexible;Kolkata;Youth Development;;Burgenland;Wien;Austria;7626
+Oliver Wilson;27;Male;Environmental conservation, Gardening;Weekdays;Delhi;Pet and Animal Service;;OberÃ¶sterreich;Wien;Austria;6142
+Amelia Adams;31;Female;Counseling, Mental health support;Flexible;Mumbai;Healthcare;;NiederÃ¶sterreich;Krems an der Donau;Austria;6270
+Benjamin Cooper;24;Male;Leadership development, Sports coaching;Evenings;Bangalore;Youth Development;;Steiermark;Linz;Austria;9079
+Harper Turner;22;Female;Social media management, Event coordination;Weekends;Chennai;Youth Development;;Steiermark;Wien;Austria;2405
+Liam Thompson;28;Male;Veterinary assistance, Animal behavior;Flexible;Kolkata;Pet and Animal Service;;Salzburg;Vils;Austria;7408
+Emily Martinez;26;Female;Nursing, Medical assistance;Weekdays;Delhi;Healthcare;;OberÃ¶sterreich;Drosendorf-Zissersdorf 1;Austria;6773
+Ethan Roberts;25;Male;Teaching, Youth mentoring;Weekends;Mumbai;Youth Development;;OberÃ¶sterreich;Wien;Austria;9268
+Sophia Harris;29;Female;Photography, Creative design;Flexible;Bangalore;Pet and Animal Service;;Burgenland;Wien;Austria;8579
+Lucas Davis;33;Male;First aid, Emergency response;Weekdays;Chennai;Healthcare;;Burgenland;Linz;Austria;4409
+Ava Turner;24;Female;Childcare, Tutoring;Evenings;Kolkata;Youth Development;;Vorarlberg;Wien;Austria;3387
+Noah Walker;27;Male;Environmental advocacy, Conservation;Weekdays;Delhi;Pet and Animal Service;;NiederÃ¶sterreich;Wien;Austria;9995
+Isabella Anderson;30;Female;Medical research, Lab technician;Flexible;Mumbai;Healthcare;;Tirol;Linz;Austria;2712
+Ethan Wilson;25;Male;Computer programming, Web development;Weekends;Bangalore;Youth Development;;Salzburg;Linz;Austria;6215
+Mia Johnson;28;Female;Animal rescue, Wildlife rehabilitation;Weekdays;Chennai;Pet and Animal Service;;Burgenland;Linz;Austria;3604
+Benjamin Turner;26;Male;Nutrition, Diet planning;Flexible;Kolkata;Healthcare;;Wien;Linz;Austria;9943
+Olivia Hernandez;29;Female;Mentoring, Career guidance;Weekends;Delhi;Youth Development;;KÃ¤rnten;Linz;Austria;1971
+Sophia Evans;23;Female;Data analysis, Statistical modeling;Weekdays;Mumbai;Healthcare;;Wien;Linz;Austria;1717
+Noah Lewis;32;Male;Event planning, Volunteer coordination;Flexible;Bangalore;Youth Development;;NiederÃ¶sterreich;Linz;Austria;8652
+Ava Smith;27;Female;Wildlife conservation, Environmental education;Weekdays;Chennai;Pet and Animal Service;;Salzburg;Berndorf;Austria;7273
+James Adams;26;Male;Physical therapy, Rehabilitation;Weekends;Kolkata;Healthcare;;Tirol;Wien;Austria;4024
+Mia Turner;24;Female;Art therapy, Special needs support;Evenings;Delhi;Youth Development;;Salzburg;Ried im Innkreis;Austria;2446
+Benjamin Martinez;29;Male;Digital marketing, Content creation;Weekdays;Mumbai;Pet and Animal Service;;Wien;Villach;Austria;6861
+Lily Thompson;30;Female;Clinical research, Data management;Flexible;Bangalore;Healthcare;;Burgenland;Linz;Austria;7824
+Ethan Walker;25;Male;Counseling, Crisis intervention;Weekends;Chennai;Youth Development;;Burgenland;Linz;Austria;5419
+Olivia Harris;27;Female;Gardening, Urban farming;Weekdays;Kolkata;Youth Development;;Salzburg;Wien;Austria;3842
+Ethan Wilson;31;Male;Public speaking, Advocacy;Evenings;Delhi;Pet and Animal Service;;Tirol;Wien;Austria;8790
+Ava Roberts;24;Female;Teaching, English language tutoring;Weekends;Mumbai;Youth Development;;Vorarlberg;KÃ¶flach;Austria;4244
+Benjamin Thompson;28;Male;Veterinary medicine, Animal surgery;Flexible;Bangalore;Pet and Animal Service;;NiederÃ¶sterreich;Wien;Austria;6408
+Mia Davis;26;Female;Health education, Community outreach;Weekdays;Chennai;Healthcare;;Vorarlberg;Wien;Austria;5334
+Noah Turner;29;Male;Leadership training, Team building;Weekends;Kolkata;Youth Development;;Tirol;Wien;Austria;9597
+Sophia Adams;23;Female;Graphic design, Visual communication;Flexible;Delhi;Pet and Animal Service;;Steiermark;Wien;Austria;2049
+James Cooper;32;Male;Nursing, Geriatric care;Weekdays;Mumbai;Healthcare;;Tirol;Wien;Austria;6485
+Mia Hernandez;27;Female;Research, Data analysis;Evenings;Bangalore;Youth Development;;Tirol;Wien;Austria;4071
+Ethan Walker;30;Male;Dog training, Animal behavior modification;Flexible;Chennai;Pet and Animal Service;;Vorarlberg;Linz;Austria;9699
+Olivia Thompson;26;Female;Occupational therapy, Rehabilitation;Weekdays;Kolkata;Healthcare;;Wien;Linz;Austria;7856
+Benjamin Adams;29;Male;Mentoring, Youth empowerment;Weekends;Delhi;Youth Development;;Burgenland;Wien;Austria;8351
+Ava Lewis;24;Female;Web development, Database management;Weekdays;Mumbai;Pet and Animal Service;;Vorarlberg;Wien;Austria;8304
+Noah Johnson;27;Male;Psychology, Mental health counseling;Flexible;Bangalore;Healthcare;;Vorarlberg;Wien;Austria;2406
+Sophia Wilson;31;Female;Event coordination, Volunteer management;Weekends;Chennai;Youth Development;;Burgenland;Wien;Austria;4771
+James Roberts;25;Male;Animal shelter volunteering, Pet adoption support;Weekdays;Kolkata;Pet and Animal Service;;Tirol;SchÃ¤rding;Austria;7053
+Mia Davis;28;Female;Social work, Case management;Evenings;Delhi;Healthcare;;KÃ¤rnten;Wien;Austria;5762
+Benjamin Turner;29;Male;Teaching, Computer literacy;Weekends;Mumbai;Youth Development;;Vorarlberg;Linz;Austria;8150
+Olivia Martinez;23;Female;Environmental activism, Conservation;Flexible;Bangalore;Pet and Animal Service;;OberÃ¶sterreich;Linz;Austria;9079
+Ethan Harris;32;Male;Medical research, Data analysis;Weekdays;Chennai;Healthcare;;KÃ¤rnten;Liezen;Austria;7451

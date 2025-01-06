@@ -3,11 +3,13 @@ from django.db import models
 from pgvector.django import HnswIndex
 
 from recommender_core.models import BaseVectorModel
+from recommender_core.utils.helper import get_llm_model, get_embedding_model
 
 
 class Address(models.Model):
     country = models.CharField(max_length=100, default="Austria")
-    City = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
     zip = models.IntegerField()
 
 
@@ -26,6 +28,14 @@ class UserProfile(BaseVectorModel):
 
     is_available = models.BooleanField(default=True)
     address = models.ForeignKey(Address, on_delete=models.PROTECT)
+
+    def generate_embedding(self):
+        llm_model = get_llm_model()
+        embedding_model = get_embedding_model()
+        self.standard_skills = list(filter(None, llm_model.get_standard_skills(self.skills)))
+        if self.standard_skills and len(self.standard_skills):
+            self.embedding = embedding_model.encode(", ".join(self.standard_skills))
+            self.save()
 
     class Meta:
         indexes = [
@@ -48,21 +58,32 @@ class TaskProfileManager(models.Manager):
 
 
 class TaskProfile(BaseVectorModel):
-    # date & time & requirements & old
+    # date & time & requirements & responsibilities &  benefits & old
 
     objects = TaskProfileManager()
 
     external_id = models.PositiveBigIntegerField()
-    deception = models.TextField()
+    description = models.TextField()
 
     is_available = models.BooleanField(default=True)
     title = models.CharField(max_length=255)
     standard_title = models.CharField(max_length=255, null=True)
-    # responsibilities = ArrayField(models.TextField())
-    # benefits = ArrayField(models.TextField())
-    skills = ArrayField(models.TextField())
+    skills = ArrayField(models.TextField(), null=True)
     standard_skills = ArrayField(models.CharField(max_length=255), null=True)
     address = models.ForeignKey(Address, on_delete=models.PROTECT)
+
+    def generate_embedding(self):
+        llm_model = get_llm_model()
+        embedding_model = get_embedding_model()
+        self.standard_skills = list(filter(None, llm_model.get_standard_skills(self.skills)))
+        if self.standard_skills and len(self.standard_skills):
+            self.embedding = embedding_model.encode(", ".join(self.standard_skills))
+            self.save()
+
+    def generate_standard_title(self):
+        model = get_llm_model()
+        self.standard_title = model.get_standard_occupation(self.title)
+        self.save()
 
     class Meta:
         indexes = [

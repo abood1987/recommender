@@ -12,7 +12,7 @@ import torch
 
 from recommender_core.embeddings.base import BaseEmbeddingModel
 from recommender_core.utils.helper import get_embedding_model
-from recommender_kb.models import Skill
+from recommender_kb.models import Skill, Occupation
 
 
 class KBExtractor:
@@ -32,7 +32,7 @@ class KBExtractor:
         self._skill_ids = self._skills["id"].to_numpy()
 
     def _load_occupations(self):
-        self._occupations = pd.DataFrame(list(Skill.objects.values("label", "embedding")))
+        self._occupations = pd.DataFrame(list(Occupation.objects.values("label", "embedding")))
         self._occupations.rename(columns={"label": "id", "description": "embedding"}, inplace=True)
         self._occupation_ids = self._occupations["id"].to_numpy()
 

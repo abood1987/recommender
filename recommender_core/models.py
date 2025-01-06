@@ -11,5 +11,5 @@ class BaseVectorModel(models.Model):
         abstract = True
 
     @classmethod
-    def search(cls, query, max_distance=0.5):
+    def search(cls, query, max_distance: float | None = None):
         return model_semantic_search(cls, query, max_distance)
