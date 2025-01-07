@@ -36,6 +36,9 @@ class Occupation(BaseVectorModel):
     alt_labels = ArrayField(models.CharField(max_length=255), blank=True, null=True)
     hidden_labels = ArrayField(models.CharField(max_length=200), blank=True, null=True)
 
+    def get_related_skills(self):
+        return list(self.skills.values_list("label", flat=True))
+
     class Meta:
         indexes = [
             HnswIndex(
