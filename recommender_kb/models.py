@@ -12,6 +12,7 @@ class ISCOGroup(BaseVectorModel):
     description = models.TextField()
 
     class Meta:
+        # https://medium.com/@simeon.emanuilov/integrating-a-vector-database-into-django-using-pgvector-72322b9debbe
         indexes = [
             HnswIndex(
                 name=f"hnsw_isco_group_embedding_index",
