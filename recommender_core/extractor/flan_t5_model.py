@@ -1,14 +1,12 @@
 from pathlib import Path
 
 from transformers import T5Tokenizer, T5ForConditionalGeneration
-from transformers.modeling_utils import SpecificPreTrainedModelType
-
 from recommender_core.embeddings.base import BaseEmbeddingModel
-from recommender_core.matcher.base import BaseMatcherModel
+from recommender_core.extractor.base import BaseExtractorModel
 from django.apps import apps
 
 
-class T5MatcherModel(BaseMatcherModel):
+class FlanT5Model(BaseExtractorModel):
     def __init__(
             self,
             model_name: str,
@@ -53,31 +51,18 @@ class T5MatcherModel(BaseMatcherModel):
 
     def match_with_kb(self, model, skill_description: str):
         matched_objects = model.search(skill_description)
-        if matched_objects.exists():
-            matched_object = matched_objects.first()
-            return matched_object.label, matched_object.distance
-        return None, None
+        return matched_objects.first() if matched_objects.exists() else None
 
     def _get_standard_skills(self, user_input: str) -> list:
         # Step 1: Extract skills from user input
         skills_str = self.start_prompt(self.extract_skills_prompt % user_input)
         skills_list = skills_str.split(',')
 
-        # Step 2: Generate description
         model = apps.get_model(app_label="recommender_kb", model_name="Skill")
-        output_dict = {}
         matched_skills = []
         for skill in skills_list:
             description = self.start_prompt(self.skill_description_prompt % skill)
-            # Step 2: Match with KB
-            matched_skill, distance = self.match_with_kb(model, description)
-            matched_skills.append(matched_skill)
-            # output_dict[skill] = {
-            #     "description": description,
-            #     "matched_skill": matched_skill,
-            #     "distance": distance
-            # }
-
+            matched_skills.append(self.match_with_kb(model, description))
         return matched_skills
 
     def get_standard_skills(self, user_input: str | list[str]) -> list:
@@ -89,8 +74,7 @@ class T5MatcherModel(BaseMatcherModel):
                 standard_skills.extend(self._get_standard_skills(skill))
         return standard_skills
 
-    def get_standard_occupation(self, user_input: str) -> str:
+    def get_standard_occupation(self, user_input: str):
         model = apps.get_model(app_label="recommender_kb", model_name="Occupation")
         description = self.start_prompt(self.occupation_description_prompt % user_input)
-        matched_occupation, distance = self.match_with_kb(model, description)
-        return matched_occupation
+        return self.match_with_kb(model, description)

@@ -6,16 +6,11 @@ class Command(BaseCommand):
     help = "Generate profiles embeddings"
 
     def add_arguments(self, parser):
-        parser.add_argument("--clear", action="store_true", help="Delete old embeddings")
         parser.add_argument("--ignore-occ", action="store_true", dest="ignore_occupations", help="ignore the import of the occupations.")
         parser.add_argument("--ignore-skills", action="store_true", dest="ignore_skills", help="ignore the import of the skills.")
 
     def handle(self, *args, **options):
         self.stdout.write("---START---")
-
-        if options.get("clear", False):
-            self.clear_data()
-            self.stdout.write("---Old data cleared----")
 
         if not options.get("ignore_occupations", False):
             self.stdout.write("---Start generating of embeddings of Tasks----")
@@ -28,16 +23,12 @@ class Command(BaseCommand):
             self.stdout.write("---Embeddings of users generated----")
         self.stdout.write("---END---")
 
-    def clear_data(self):
-        TaskProfile.objects.all().update(embedding=None)
-        UserProfile.objects.all().update(embedding=None)
-
     def generate_user_embeddings(self):
         i = 0
         for q in UserProfile.objects.all():
             if i % 1000 == 0:
                 print(i)
-            q.generate_embedding()
+            q.kb_matching_and_generate_embedding()
             i += 1
 
     def generate_task_embeddings(self):
@@ -45,6 +36,5 @@ class Command(BaseCommand):
         for q in TaskProfile.objects.all():
             if i % 1000 == 0:
                 print(i)
-            q.generate_embedding()
-            q.generate_standard_title()
+            q.kb_matching_and_generate_embedding()
             i += 1

@@ -1,9 +1,11 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.db.models.functions import Coalesce
 from pgvector.django import HnswIndex
 
 from recommender_core.models import BaseVectorModel
 from recommender_core.utils.helper import get_llm_model, get_embedding_model
+from recommender_kb.models import Skill, Occupation
 
 
 class Address(models.Model):
@@ -24,18 +26,20 @@ class UserProfile(BaseVectorModel):
     objects = UserProfileManager()
     external_id = models.PositiveBigIntegerField(unique=True)
     skills = ArrayField(models.TextField())
-    standard_skills = ArrayField(models.CharField(max_length=255), null=True)
+    standard_skills = models.ManyToManyField(Skill, related_name="user_profiles")
 
     is_available = models.BooleanField(default=True)
     address = models.ForeignKey(Address, on_delete=models.PROTECT)
 
-    def generate_embedding(self):
-        llm_model = get_llm_model()
-        embedding_model = get_embedding_model()
-        self.standard_skills = list(filter(None, llm_model.get_standard_skills(self.skills)))
-        if self.standard_skills and len(self.standard_skills):
-            self.embedding = embedding_model.encode(", ".join(self.standard_skills))
-            self.save()
+    def get_standard_skills(self):
+        return list(filter(None, get_llm_model().get_standard_skills(self.skills)))
+
+    def kb_matching_and_generate_embedding(self):
+        self.standard_skills.add(*self.get_standard_skills())
+        self.embedding = get_embedding_model().encode(
+            ", ".join(list(self.standard_skills.values_list("label", flat=True)) or [])
+        )
+        self.save()
 
     class Meta:
         indexes = [
@@ -67,23 +71,35 @@ class TaskProfile(BaseVectorModel):
 
     is_available = models.BooleanField(default=True)
     title = models.CharField(max_length=255)
-    standard_title = models.CharField(max_length=255, null=True)
+    standard_title = models.ForeignKey(Occupation, null=True, related_name="task_profiles", on_delete=models.PROTECT)
     skills = ArrayField(models.TextField(), null=True)
-    standard_skills = ArrayField(models.CharField(max_length=255), null=True)
+    standard_skills = models.ManyToManyField(Skill, related_name="task_profiles")
     address = models.ForeignKey(Address, on_delete=models.PROTECT)
 
-    def generate_embedding(self):
-        llm_model = get_llm_model()
-        embedding_model = get_embedding_model()
-        self.standard_skills = list(filter(None, llm_model.get_standard_skills(self.skills)))
-        if self.standard_skills and len(self.standard_skills):
-            self.embedding = embedding_model.encode(", ".join(self.standard_skills))
-            self.save()
+    def get_standard_skills(self):
+        return list(filter(None, get_llm_model().get_standard_skills(self.skills)))
 
-    def generate_standard_title(self):
-        model = get_llm_model()
-        self.standard_title = model.get_standard_occupation(self.title)
+    def get_standard_title(self):
+        return get_llm_model().get_standard_occupation(self.title)
+
+    def kb_matching_and_generate_embedding(self):
+        self.standard_title = self.get_standard_title()
+        self.standard_skills.add(*self.get_standard_skills())
+        self.embedding = get_embedding_model().encode(
+            ", ".join(list(self.standard_skills.values_list("label", flat=True)) or []))
         self.save()
+
+    def get_recommendations(self):
+        return UserProfile.objects.filter(
+            standard_skills__overlap=self.standard_skills
+        ).annotate(
+            overlap_count=Coalesce(
+                models.Count(
+                    "standard_skills",
+                    filter=models.Q(standard_skills__overlap=self.standard_skills)
+                ), models.Value(0, output_field=models.IntegerField())
+            )
+        ).order_by("-overlap_count")
 
     class Meta:
         indexes = [

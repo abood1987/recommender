@@ -3,7 +3,7 @@ from django.utils.module_loading import import_string
 from pgvector.django import CosineDistance
 from recommender.settings import VECTOR_SETTINGS
 from recommender_core.embeddings.base import BaseEmbeddingModel
-from recommender_core.matcher.base import BaseMatcherModel
+from recommender_core.extractor.base import BaseExtractorModel
 
 
 def get_embedding_model() -> BaseEmbeddingModel:
@@ -18,15 +18,15 @@ def get_embedding_model() -> BaseEmbeddingModel:
     return model_cls(**model_config)
 
 
-def get_llm_model() -> BaseMatcherModel:
+def get_llm_model() -> BaseExtractorModel:
     """
-    Get matcher model, as specified in the settings.
-    :return: matcher model instance.
+    Get extractor model, as specified in the settings.
+    :return: extractor model instance.
     """
-    model_cls = VECTOR_SETTINGS["matcher"]["class"]
+    model_cls = VECTOR_SETTINGS["extractor"]["class"]
     if isinstance(model_cls, str):
         model_cls = import_string(model_cls)
-    model_config = VECTOR_SETTINGS["matcher"]["configuration"]
+    model_config = VECTOR_SETTINGS["extractor"]["configuration"]
     return model_cls(**{
         **model_config,
         "embedding_model": get_embedding_model()

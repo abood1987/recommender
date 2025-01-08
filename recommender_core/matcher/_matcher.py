@@ -1,13 +1,9 @@
 from itertools import chain
-from typing import Union, List
-import warnings
-import pickle
-import os
 import re
 
 import pandas as pd
 import numpy as np
-from sentence_transformers import SentenceTransformer, util
+from sentence_transformers import util
 import torch
 
 from recommender_core.embeddings.base import BaseEmbeddingModel
@@ -15,7 +11,7 @@ from recommender_core.utils.helper import get_embedding_model
 from recommender_kb.models import Skill, Occupation
 
 
-class KBExtractor:
+class KBMatcher:
     def __init__(self, threshold: float = 0.45):
 
         self.threshold = threshold
@@ -43,15 +39,15 @@ class KBExtractor:
         self._occupation_embeddings = np.array(self._occupations["embedding"].to_list())
 
     @staticmethod
-    def text_to_sentences(text: str) -> List[str]:
+    def text_to_sentences(text: str) -> list[str]:
         return [s for s in re.split(r"\r|\n|\t|\.|\,|\;|and|or", text.strip()) if s]
 
     def _get_entity(
         self,
-        texts: List[str],
+        texts: list[str],
         entity_ids: np.ndarray[str],
         entity_embeddings: torch.Tensor | np.ndarray,
-    ) -> List[List[str]]:
+    ) -> list[list[str]]:
 
         if all(not text for text in texts):
             return [[] for _ in texts]
@@ -104,7 +100,7 @@ class KBExtractor:
 
         return entity_ids_per_text
 
-    def get_skills(self, texts: List[str]) -> List[List[str]]:
+    def get_skills(self, texts: list[str]) -> list[list[str]]:
 
         return self._get_entity(
             texts,
@@ -112,7 +108,7 @@ class KBExtractor:
             self._skill_embeddings,
         )
 
-    def get_occupations(self, texts: List[str]) -> List[List[str]]:
+    def get_occupations(self, texts: list[str]) -> list[list[str]]:
 
         return self._get_entity(
             texts,

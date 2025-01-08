@@ -1,1 +1,0 @@
-from .t5_matcher_model import T5MatcherModel # noqa
