@@ -11,8 +11,6 @@ docs/_build
 node_modules
 package-lock.json
 secret_key.txt
-static
-!recommender/static
-!x_calendar/static
+/static
 data/models
 venv

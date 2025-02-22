@@ -106,8 +106,9 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 ################################################################################
 # MEDIA / STATIC / LOCALE
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "recommender_test/static",
 ]
 ################################################################################
 # LANGUAGE/DATE/TIME
