@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% block navbar %}
+    <ol class="breadcrumb bg-light m-0 p-0">
+        <li class="breadcrumb-item"><a href="{% url 'test_case_table' %}">Test case table</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ object.name }}</li>
+    </ol>
+    <div>
+        <a class="btn btn-primary modal-form" href="{% url 'test_case_table' %}">Start test case</a>
+    </div>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
     <div class="row">
@@ -8,7 +18,7 @@
             <a
                     class="btn btn-primary modal-form mb-3 w-100"
                     type="button"
-                    href="{% url 'add_user_profile' pk=object.id %}">Add user
+                    href="{% url 'add_user_profile' pk=object.id %}">Add User
             </a>
             <h2 class="text-center mb-3">Test Users</h2>
             {% for user in object.users.all %}
@@ -47,7 +57,7 @@
             <a
                     class="btn btn-primary modal-form mb-3 w-100"
                     type="button"
-                    href="{% url 'add_task_profile' pk=object.id %}">Add task
+                    href="{% url 'add_task_profile' pk=object.id %}">Add Task
             </a>
             <h2 class="text-center mb-3">Test Tasks</h2>
             {% for task in object.tasks.all %}
