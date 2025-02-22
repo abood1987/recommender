@@ -6,7 +6,7 @@
         <li class="breadcrumb-item active" aria-current="page">{{ object.name }}</li>
     </ol>
     <div>
-        <a class="btn btn-primary modal-form" href="{% url 'test_case_table' %}">Start test case</a>
+        <a class="btn btn-primary modal-form" href="{% url 'start_test_case' pk=object.pk %}">Start test case</a>
     </div>
 {% endblock %}
 

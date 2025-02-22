@@ -1,4 +1,10 @@
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
+from bootstrap_modal_forms.generic import (
+    BSModalCreateView,
+    BSModalUpdateView,
+    BSModalDeleteView,
+    BSModalReadView
+)
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
 from django_filters import FilterSet
@@ -63,5 +69,18 @@ class DeleteTestCaseView(BSModalDeleteView):
         "form_title": "Delete Test Case",
     }
 
+
+class StartTestCaseView(BSModalReadView):
+    model = TestCase
+    template_name = "recommender_test/modal_base_template.html"
+    extra_context = {
+        "content": "Would you like to start this test case?",
+        "btn_text": "Start",
+        "form_title": "Start Test Case",
+    }
+
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse_lazy("test_case_table")

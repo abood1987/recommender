@@ -19,6 +19,7 @@ urlpatterns = [
     path("<pk>/details/", views.TestCaseDetailsView.as_view(), name="test_case_details"),
     path("<pk>/update/", views.UpdateTestCaseView.as_view(), name="edit_test_case"),
     path("<pk>/delete/", views.DeleteTestCaseView.as_view(), name="delete_test_case"),
+    path("<pk>/start/", views.StartTestCaseView.as_view(), name="start_test_case"),
 
     path("<int:pk>/user/", include(urlpatterns_user_profile)),
     path("<int:pk>/task/", include(urlpatterns_task_profile)),
