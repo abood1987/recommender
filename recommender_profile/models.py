@@ -14,6 +14,9 @@ class Address(models.Model):
     city = models.CharField(max_length=100)
     zip = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.country}, {self.state}, {self.city}, {self.zip}"
+
 
 class UserProfileManager(models.Manager):
     def active(self):

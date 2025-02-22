@@ -1,4 +1,4 @@
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 1
   fields:
     country: "Austria"
@@ -6,7 +6,7 @@
     city: "Vienna"
     zip: 1010
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 2
   fields:
     country: "Austria"
@@ -14,7 +14,7 @@
     city: "St. Pölten"
     zip: 3100
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 3
   fields:
     country: "Austria"
@@ -22,7 +22,7 @@
     city: "Linz"
     zip: 4020
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 4
   fields:
     country: "Austria"
@@ -30,7 +30,7 @@
     city: "Graz"
     zip: 8010
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 5
   fields:
     country: "Austria"
@@ -38,7 +38,7 @@
     city: "Innsbruck"
     zip: 6020
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 6
   fields:
     country: "Austria"
@@ -46,7 +46,7 @@
     city: "Bregenz"
     zip: 6900
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 7
   fields:
     country: "Austria"
@@ -54,7 +54,7 @@
     city: "Salzburg"
     zip: 5020
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 8
   fields:
     country: "Austria"
@@ -62,7 +62,7 @@
     city: "Klagenfurt"
     zip: 9020
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 9
   fields:
     country: "Austria"
@@ -70,7 +70,7 @@
     city: "Eisenstadt"
     zip: 7000
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 10
   fields:
     country: "Austria"
@@ -78,7 +78,7 @@
     city: "Floridsdorf"
     zip: 1210
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 11
   fields:
     country: "Austria"
@@ -86,7 +86,7 @@
     city: "Baden"
     zip: 2500
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 12
   fields:
     country: "Austria"
@@ -94,7 +94,7 @@
     city: "Wels"
     zip: 4600
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 13
   fields:
     country: "Austria"
@@ -102,7 +102,7 @@
     city: "Leoben"
     zip: 8700
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 14
   fields:
     country: "Austria"
@@ -110,7 +110,7 @@
     city: "Kufstein"
     zip: 6330
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 15
   fields:
     country: "Austria"
@@ -118,7 +118,7 @@
     city: "Dornbirn"
     zip: 6850
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 16
   fields:
     country: "Austria"
@@ -126,7 +126,7 @@
     city: "Hallein"
     zip: 5400
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 17
   fields:
     country: "Austria"
@@ -134,7 +134,7 @@
     city: "Villach"
     zip: 9500
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 18
   fields:
     country: "Austria"
@@ -142,7 +142,7 @@
     city: "Neusiedl am See"
     zip: 7100
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 19
   fields:
     country: "Austria"
@@ -150,7 +150,7 @@
     city: "Favoriten"
     zip: 1100
 
-- model: recommender_test.TestAddress
+- model: recommender_profile.Address
   pk: 20
   fields:
     country: "Austria"
