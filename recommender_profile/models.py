@@ -71,8 +71,8 @@ class TaskProfile(BaseVectorModel):
 
     is_available = models.BooleanField(default=True)
     title = models.CharField(max_length=255)
-    standard_title = models.ForeignKey(Occupation, null=True, related_name="task_profiles", on_delete=models.PROTECT)
     skills = ArrayField(models.TextField(), null=True)
+    standard_title = models.ForeignKey(Occupation, null=True, related_name="task_profiles", on_delete=models.PROTECT)
     standard_skills = models.ManyToManyField(Skill, related_name="task_profiles")
     address = models.ForeignKey(Address, on_delete=models.PROTECT)
 

@@ -106,7 +106,9 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 ################################################################################
 # MEDIA / STATIC / LOCALE
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 ################################################################################
 # LANGUAGE/DATE/TIME
 LANGUAGE_CODE = "en-GB"
@@ -145,7 +147,15 @@ INSTALLED_APPS = [
     'recommender_core',
     'recommender_rest',
     'recommender_kb',
-    'recommender_profile'
+    'recommender_profile',
+
+    # test app
+    'bootstrap_modal_forms',
+    'django_jsonform',
+    'prettyjson',
+    'django_tables2',
+    'bootstrap4',
+    'recommender_test',
 ]
 
 ################################################################################

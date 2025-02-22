@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include("recommender_rest.urls")),
+    path('', include("recommender_test.urls")),
 ]

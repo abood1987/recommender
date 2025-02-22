@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Test Users Column -->
+        <div class="col-md-6 border-right">
+            <a
+                    class="btn btn-primary modal-form mb-3 w-100"
+                    type="button"
+                    href="{% url 'add_user_profile' pk=object.id %}">Add user
+            </a>
+            <h2 class="text-center mb-3">Test Users</h2>
+            {% for user in object.users.all %}
+                <div class="card mb-1 shadow-sm border">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="w-100">
+                                <div><strong>Address:</strong> {{ user.address }}</div>
+                                <div><strong>Skills:</strong></div>
+                                <ul class="list-group list-group-flush">
+                                    {% for skill in user.skills %}
+                                    <li class="ml-4">{{ skill }}</li>
+                                    {% empty %}
+                                    <li class="list-group-item text-muted">No skills available</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div>
+                                    <a class="btn btn-link modal-form mb-3" href="{% url 'update_user_profile' pk=object.id user_id=user.id %}">Update</a>
+                                </div>
+                                <div>
+                                    <a class="btn btn-link modal-form mb-3" href="{% url 'delete_user_profile' pk=object.id user_id=user.id %}">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center text-muted">No test users found.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Test Tasks Column -->
+        <div class="col-md-6">
+            <a
+                    class="btn btn-primary modal-form mb-3 w-100"
+                    type="button"
+                    href="{% url 'add_task_profile' pk=object.id %}">Add task
+            </a>
+            <h2 class="text-center mb-3">Test Tasks</h2>
+            {% for task in object.tasks.all %}
+                <div class="card mb-3 shadow-sm border">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="w-100">
+                                <div><strong>Title:</strong> {{ task.title }}</div>
+                                <div><strong>Description:</strong> {{ task.description }}</div>
+                                <div><strong>Address:</strong> {{ task.address }}</div>
+                                <div><strong>Skills:</strong></div>
+                                <ul class="list-group list-group-flush">
+                                    {% for skill in task.skills %}
+                                        <li class="ml-4">{{ skill }}</li>
+                                    {% empty %}
+                                        <li class="list-group-item text-muted">No skills available</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div>
+                                    <a class="btn btn-link modal-form mb-3" href="{% url 'update_task_profile' pk=object.id task_id=task.id %}">Update</a>
+                                </div>
+                                <div>
+                                    <a class="btn btn-link modal-form mb-3" href="{% url 'delete_task_profile' pk=object.id task_id=task.id %}">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center text-muted">No test tasks found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
