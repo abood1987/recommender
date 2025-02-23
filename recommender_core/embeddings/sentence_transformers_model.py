@@ -8,7 +8,7 @@ from recommender_core.embeddings.base import BaseEmbeddingModel
 
 class SentenceTransformerModel(BaseEmbeddingModel):
     def __init__(self, model_name: str, model_path: str| None = None, device: str| None =None):
-        super().__init__(device, model_name, model_path)
+        super().__init__(model_name, model_path, device)
         self.model_path  = model_path
         self.model_name  = model_name
         self._model = self._get_model()
