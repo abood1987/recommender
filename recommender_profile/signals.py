@@ -7,18 +7,18 @@ from recommender_profile.models import TaskProfile, UserProfile
 @receiver(post_save, sender=TaskProfile)
 def task_profile_post_save(sender, instance, created, **kwargs):
     if created:
-        instance.kb_matching_and_generate_embedding()
+        instance.generate_standard_skills_and_embedding()
     else:
         update_fields = kwargs.get("update_fields")
         if update_fields and ("title" in update_fields or "skills" in update_fields):
-            instance.kb_matching_and_generate_embedding()
+            instance.generate_standard_skills_and_embedding()
 
 
 @receiver(post_save, sender=UserProfile)
-def task_profile_post_save(sender, instance, created, **kwargs):
+def user_profile_post_save(sender, instance, created, **kwargs):
     if created:
-        instance.kb_matching_and_generate_embedding()
+        instance.generate_standard_skills_and_embedding()
     else:
         update_fields = kwargs.get("update_fields")
         if update_fields and "skills" in update_fields:
-            instance.kb_matching_and_generate_embedding()
+            instance.generate_standard_skills_and_embedding()
