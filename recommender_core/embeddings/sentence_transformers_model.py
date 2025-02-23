@@ -8,7 +8,7 @@ from recommender_core.embeddings.base import BaseEmbeddingModel
 
 class SentenceTransformerModel(BaseEmbeddingModel):
     def __init__(self, model_name: str, model_path: str| None = None, device: str| None =None):
-        super().__init__(device)
+        super().__init__(device, model_name, model_path)
         self.model_path  = model_path
         self.model_name  = model_name
         self._model = self._get_model()
@@ -16,12 +16,12 @@ class SentenceTransformerModel(BaseEmbeddingModel):
     def _get_model(self):
         if not self.model_path:
             return SentenceTransformer(self.model_name)
-        path = Path(self.model_path)
-        if path.exists() and any(path.iterdir()):
+        try:
             return SentenceTransformer(self.model_path)
-        else:
+        except Exception as e:
+            path = Path(self.model_path)
             path.mkdir(parents=True, exist_ok=True)
-            model = SentenceTransformer(self.model_path)
+            model = SentenceTransformer(self.model_name)
             model.save(self.model_path)
             return model
 

@@ -6,11 +6,13 @@ from recommender_kb.models import (
     Skill, ISCOGroup,
 )
 
-EMBEDDING_MODEL: BaseEmbeddingModel = get_embedding_model()
-
 
 class Command(BaseCommand):
     help = "Generate ESCO embeddings"
+
+    def __init__(self, stdout=None, stderr=None, no_color=False, force_color=False):
+        super().__init__(stdout, stderr, no_color, force_color)
+        self.embedding_model: BaseEmbeddingModel = get_embedding_model()
 
     def add_arguments(self, parser):
         parser.add_argument("--clear", action="store_true", help="Delete old embeddings")
@@ -55,7 +57,7 @@ class Command(BaseCommand):
     def update_model(self, model, fields):
         queryset = model.objects.all()
         for q in queryset:
-            q.embedding = EMBEDDING_MODEL.encode(self.get_text(q, fields))
+            q.embedding = self.embedding_model.encode(self.get_text(q, fields))
         model.objects.bulk_update(queryset, ["embedding"])
 
     def generate_isco_groups_embeddings(self):

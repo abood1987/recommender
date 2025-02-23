@@ -1,12 +1,15 @@
 from pathlib import Path
 
+from django.db.models import Model as DjangoModel
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from recommender_core.embeddings.base import BaseEmbeddingModel
 from recommender_core.extractor.base import BaseExtractorModel
 from django.apps import apps
+from recommender_core.utils.collector import DataCollector, ClassTracer
 
 
-class FlanT5Model(BaseExtractorModel):
+class FlanT5Model(BaseExtractorModel, metaclass=ClassTracer):
+    @ClassTracer.exclude
     def __init__(
             self,
             model_name: str,
@@ -16,16 +19,19 @@ class FlanT5Model(BaseExtractorModel):
             embedding_model: BaseEmbeddingModel,
             model_path: str | None = None
     ):
+        super().__init__(model_name, model_path)
         # Initialize FLAN-T5 model and tokenizer
         # self.model_name = "google/flan-t5-large"
-        self.model_path = model_path
-        self.model_name = model_name
         self.skill_description_prompt = skill_description_prompt
         self.extract_skills_prompt = extract_skills_prompt
         self.occupation_description_prompt = occupation_description_prompt
         self.tokenizer, self.model = self._get_model()
         self.embedding_model = embedding_model
+        self.skill_kb: DjangoModel = apps.get_model(app_label="recommender_kb", model_name="Skill")
+        self.occupation_kb: DjangoModel = apps.get_model(app_label="recommender_kb", model_name="Occupation")
+        self.collector = DataCollector()
 
+    @ClassTracer.exclude
     def _get_model(self):
         if not self.model_path:
             return (
@@ -48,33 +54,23 @@ class FlanT5Model(BaseExtractorModel):
         outputs = self.model.generate(inputs.input_ids, max_length=512, num_beams=5, early_stopping=True)
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-
-    def match_with_kb(self, model, skill_description: str):
+    def match_with_kb(self, model: DjangoModel, skill_description: str):
         matched_objects = model.search(skill_description)
         return matched_objects.first() if matched_objects.exists() else None
 
-    def _get_standard_skills(self, user_input: str) -> list:
-        # Step 1: Extract skills from user input
-        skills_str = self.start_prompt(self.extract_skills_prompt % user_input)
-        skills_list = skills_str.split(',')
-
-        model = apps.get_model(app_label="recommender_kb", model_name="Skill")
-        matched_skills = []
-        for skill in skills_list:
-            description = self.start_prompt(self.skill_description_prompt % skill)
-            matched_skills.append(self.match_with_kb(model, description))
-        return matched_skills
-
-    def get_standard_skills(self, user_input: str | list[str]) -> list:
+    def get_standard_skills(self, user_inputs: list[str]) -> list:
         standard_skills = []
-        if isinstance(user_input, str):
-            standard_skills = self._get_standard_skills(user_input)
-        elif isinstance(user_input, list):
-            for skill in user_input:
-                standard_skills.extend(self._get_standard_skills(skill))
-        return standard_skills
+
+        for user_input in user_inputs:
+            skills_str = self.start_prompt(self.extract_skills_prompt % user_input)
+            for skill in skills_str.split(','):
+                description = self.start_prompt(self.skill_description_prompt % skill)
+                standard_skills.append(self.match_with_kb(self.skill_kb, description))
+        return list(filter(None, standard_skills))
 
     def get_standard_occupation(self, user_input: str):
-        model = apps.get_model(app_label="recommender_kb", model_name="Occupation")
         description = self.start_prompt(self.occupation_description_prompt % user_input)
-        return self.match_with_kb(model, description)
+        return self.match_with_kb(self.occupation_kb, description)
+
+    def encode(self, text) -> list[float]:
+        return self.embedding_model.encode(text)

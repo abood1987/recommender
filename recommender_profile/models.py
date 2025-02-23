@@ -3,8 +3,9 @@ from django.db import models
 from django.db.models.functions import Coalesce
 from pgvector.django import HnswIndex
 
+from recommender_core.extractor.base import BaseExtractorModel
 from recommender_core.models import BaseVectorModel
-from recommender_core.utils.helper import get_llm_model, get_embedding_model
+from recommender_core.utils.helper import get_llm_model
 from recommender_kb.models import Skill, Occupation
 
 
@@ -34,12 +35,10 @@ class UserProfile(BaseVectorModel):
     is_available = models.BooleanField(default=True)
     address = models.ForeignKey(Address, on_delete=models.PROTECT)
 
-    def get_standard_skills(self):
-        return list(filter(None, get_llm_model().get_standard_skills(self.skills)))
-
-    def kb_matching_and_generate_embedding(self):
-        self.standard_skills.add(*self.get_standard_skills())
-        self.embedding = get_embedding_model().encode(
+    def generate_standard_skills_and_embedding(self, llm_model: BaseExtractorModel = None):
+        llm_model = llm_model or get_llm_model()
+        self.standard_skills.set(*llm_model.get_standard_skills(self.skills))
+        self.embedding = llm_model.encode(
             ", ".join(list(self.standard_skills.values_list("label", flat=True)) or [])
         )
         self.save()
@@ -79,16 +78,11 @@ class TaskProfile(BaseVectorModel):
     standard_skills = models.ManyToManyField(Skill, related_name="task_profiles")
     address = models.ForeignKey(Address, on_delete=models.PROTECT)
 
-    def get_standard_skills(self):
-        return list(filter(None, get_llm_model().get_standard_skills(self.skills)))
-
-    def get_standard_title(self):
-        return get_llm_model().get_standard_occupation(self.title)
-
-    def kb_matching_and_generate_embedding(self):
-        self.standard_title = self.get_standard_title()
-        self.standard_skills.add(*self.get_standard_skills())
-        self.embedding = get_embedding_model().encode(
+    def generate_standard_skills_and_embedding(self, llm_model: BaseExtractorModel = None):
+        llm_model = llm_model or get_llm_model()
+        self.standard_title = llm_model.get_standard_occupation(self.title)
+        self.standard_skills.set(*llm_model.get_standard_skills(self.skills))
+        self.embedding = llm_model.encode(
             ", ".join(list(self.standard_skills.values_list("label", flat=True)) or []))
         self.save()
 

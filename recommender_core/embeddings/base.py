@@ -10,10 +10,10 @@ class BaseEmbeddingModel(Singleton, ABC):
     Base for all the embedding models.
     """
 
-    def __init__(self, device: str| None = None,):
-        self.device = (
-            device if device else "cuda" if torch.cuda.is_available() else "cpu"
-        )
+    def __init__(self, model_name: str, model_path: str| None = None, device: str| None = None,):
+        self.device = device if device in ["cpu", "cuda"] else "cuda" if torch.cuda.is_available() else "cpu"
+        self.model_path = model_path
+        self.model_name = model_name
 
     def size(self) -> int:
         """

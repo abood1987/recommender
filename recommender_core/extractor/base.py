@@ -4,6 +4,11 @@ from recommender_core.utils.singleton import Singleton
 
 class BaseExtractorModel(Singleton, ABC):
 
+
+    def __init__(self, model_name: str, model_path: str | None = None):
+        self.model_name = model_name
+        self.model_path = model_path
+
     def start_prompt(self, prompt):
         """
         Start direct prompt using selected model.
@@ -16,7 +21,7 @@ class BaseExtractorModel(Singleton, ABC):
         """
         raise NotImplementedError
 
-    def get_standard_skills(self, user_input: str):
+    def get_standard_skills(self, user_input: str) -> list:
         """
         Complete process: Extract skills from user input and Generate description and match with the knowledge base.
         """
@@ -26,4 +31,7 @@ class BaseExtractorModel(Singleton, ABC):
         """
         Complete process: Generate occupation description and match with the knowledge base.
         """
+        raise NotImplementedError
+
+    def encode(self, text) -> list[float]:
         raise NotImplementedError
