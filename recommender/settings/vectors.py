@@ -4,8 +4,8 @@ VECTOR_SETTINGS = {
         "class": "recommender_core.embeddings.SentenceTransformerModel",
         # Configuration is passed directly to the embeddings model class during initialization.
         "configuration": {
-            "model_name": "sentence-transformers/all-mpnet-base-v2",
-            "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\all-mpnet-base-v2"
+            "model_name": "paraphrase-mpnet-base-v2",
+            "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\paraphrase-mpnet-base-v2"
         },
     },
     "extractor": {
