@@ -1,10 +1,11 @@
+from concurrent.futures import ThreadPoolExecutor
+
 from bootstrap_modal_forms.generic import (
     BSModalCreateView,
     BSModalUpdateView,
     BSModalDeleteView,
     BSModalReadView
 )
-from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
 from django_filters import FilterSet
@@ -12,6 +13,8 @@ from django_filters.views import FilterView
 from django_tables2 import tables, A, LinkColumn, TemplateColumn
 from django_tables2.views import SingleTableMixin
 
+from recommender_core.utils.collector import DataCollector
+from recommender_core.utils.helper import get_llm_model
 from recommender_test.forms import TestCaseForm
 from recommender_test.models import TestCase
 
@@ -79,8 +82,28 @@ class StartTestCaseView(BSModalReadView):
         "form_title": "Start Test Case",
     }
 
-    def post(self, request, *args, **kwargs):
-        return HttpResponseRedirect(self.get_success_url())
+    def get(self, request, *args, **kwargs):
+        print(DataCollector().data)
+        return super().get(request, *args, **kwargs)
 
-    def get_success_url(self):
-        return reverse_lazy("test_case_table")
+    def post(self, request, *args, **kwargs):
+        llm_model = get_llm_model()
+        instance = self.get_object()
+
+        with ThreadPoolExecutor() as executor:
+            # Run user and task processing in parallel
+            futures = []
+            for u in instance.users.all():
+                futures.append(executor.submit(u.generate_standard_skills_and_embedding, llm_model))
+
+            for s in instance.tasks.all():
+                futures.append(executor.submit(s.generate_standard_skills_and_embedding, llm_model))
+
+            for future in futures: # Wait for all tasks to finish
+                future.result()
+
+        self.template_name = "recommender_test/test_case_results.html"
+        return self.render_to_response({
+            "object": instance,
+            "traces": DataCollector().data
+        })

@@ -17,6 +17,10 @@ class TestCase(models.Model):
     name = models.CharField(max_length=100)
     users = models.ManyToManyField(UserProfile)
     tasks = models.ManyToManyField(TaskProfile)
+
+    def __str__(self):
+        return self.name
+
 #
 # class TestUser(models.Model):
 #     address = models.ForeignKey(TestAddress, on_delete=models.PROTECT)

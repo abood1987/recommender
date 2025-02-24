@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load prettyjson %}
+
+{% block extra_head %}
+    {% prettyjson_setup %}
+{% endblock %}
+
+{% block navbar %}
+    <ol class="breadcrumb bg-light m-0 p-0">
+        <li class="breadcrumb-item"><a href="{% url 'test_case_table' %}">Test case table</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'test_case_details' pk=object.pk %}">{{ object.name }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Results</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="results-tab" data-toggle="tab" data-target="#results" type="button" role="tab" aria-controls="results" aria-selected="true">Results</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="traces-tab" data-toggle="tab" data-target="#traces" type="button" role="tab" aria-controls="traces" aria-selected="false">Traces</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="results" role="tabpanel" aria-labelledby="results-tab">
+            <div class="row">
+                <div class="col-md-6 border-right">
+                    {% for user in object.users.all %}
+                        <div class="card mb-3 shadow-sm border">
+                            <div class="card-body">
+                                <div>{{ user.skills }}</div>
+                                <ul class="list-group list-group-flush">
+                                    {% for skill in user.standard_skills.all %}
+                                        <li class="ml-4">{{ skill }}</li>
+                                    {% empty %}
+                                        <li class="list-group-item text-muted">No skills available</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-center text-muted">No users found.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Test Tasks Column -->
+                <div class="col-md-6">
+                    {% for task in object.tasks.all %}
+                        <div class="card mb-3 shadow-sm border">
+                            <div class="card-body">
+                                <div>{{ task.title }} --> {{ task.standard_title }}</div>
+                                <hr>
+                                <div>{{ task.skills }}</div>
+                                <ul class="list-group list-group-flush">
+                                    {% for skill in task.standard_skills.all %}
+                                        <li class="ml-4">{{ skill }}</li>
+                                    {% empty %}
+                                        <li class="list-group-item text-muted">No skills available</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-center text-muted">No test tasks found.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="traces" role="tabpanel" aria-labelledby="traces-tab">
+            <div class="row">
+                {% prettyjson  traces initial='parsed' %}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+    </div>
+</div>
+{% endblock %}
