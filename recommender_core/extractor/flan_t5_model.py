@@ -8,7 +8,7 @@ from django.apps import apps
 from recommender_core.utils.collector import DataCollector, ClassTracer
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
+if TYPE_CHECKING: # solve circular import
     from recommender_core.models import BaseVectorModel
 
 
@@ -31,8 +31,8 @@ class FlanT5Model(BaseExtractorModel, metaclass=ClassTracer):
         self.occupation_description_prompt = occupation_description_prompt
         self.tokenizer, self.model = self._get_model()
         self.embedding_model = embedding_model
-        self.skill_kb: BaseVectorModel = apps.get_model(app_label="recommender_kb", model_name="Skill")
-        self.occupation_kb: BaseVectorModel = apps.get_model(app_label="recommender_kb", model_name="Occupation")
+        self.skill_kb: "BaseVectorModel" = apps.get_model(app_label="recommender_kb", model_name="Skill")
+        self.occupation_kb: "BaseVectorModel" = apps.get_model(app_label="recommender_kb", model_name="Occupation")
         self.collector = DataCollector()
 
     @ClassTracer.exclude
