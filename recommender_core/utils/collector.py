@@ -14,7 +14,7 @@ class ClassTracer(ABCMeta):
     def __new__(cls, class_name, bases, class_dict):
         new_class_dict = {}
         for attributeName, attribute in class_dict.items():
-            if isinstance(attribute, FunctionType):
+            if isinstance(attribute, FunctionType) and not getattr(attribute, "_exclude_from_tracing", False):
                 # replace it with a wrapped version
                 attribute = ClassTracer.wrapper(attribute)
             new_class_dict[attributeName] = attribute
@@ -28,12 +28,13 @@ class ClassTracer(ABCMeta):
             res = method(*args, **kwargs)
             if "traces" not in ClassTracer.collector.data:
                 ClassTracer.collector.data["traces"] = []
+
             ClassTracer.collector.data["traces"].append({
                 "class_name": args[0].__class__.__name__,
                 "func_name": method.__name__,
-                "args": args[1:],
-                "kwargs": kwargs,
-                "result": res
+                "args": ClassTracer.serialize_data(args[1:]),
+                "kwargs": ClassTracer.serialize_data(kwargs),
+                "result": ClassTracer.serialize_data(res)
             })
             return res
         return wrapped
@@ -43,3 +44,28 @@ class ClassTracer(ABCMeta):
         """Decorator to mark functions that should not be traced."""
         method._exclude_from_tracing = True
         return method
+
+    @staticmethod
+    def serialize_data(data):
+        def transform_value(item):
+            if isinstance(item, type):
+                return item.__name__
+            elif isinstance(item, object):
+                if hasattr(item, "__str__"):
+                    return item.__str__()
+                else:
+                    return f"{item.__class__.__name__} instance"
+            return item
+
+        if isinstance(data, list) or isinstance(data, tuple):
+            new_data = []
+            for item in data:
+                new_data.append(transform_value(item))
+
+        elif isinstance(data, dict):
+            new_data = {}
+            for key, value in data.items():
+                new_data[key] = transform_value(value)
+        else:
+            new_data = transform_value(data)
+        return new_data
