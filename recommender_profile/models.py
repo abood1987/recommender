@@ -37,7 +37,7 @@ class UserProfile(BaseVectorModel):
 
     def generate_standard_skills_and_embedding(self, llm_model: BaseExtractorModel = None):
         llm_model = llm_model or get_llm_model()
-        self.standard_skills.set(*llm_model.get_standard_skills(self.skills))
+        self.standard_skills.set(llm_model.get_standard_skills(self.skills))
         self.embedding = llm_model.encode(
             ", ".join(list(self.standard_skills.values_list("label", flat=True)) or [])
         )
@@ -81,7 +81,7 @@ class TaskProfile(BaseVectorModel):
     def generate_standard_skills_and_embedding(self, llm_model: BaseExtractorModel = None):
         llm_model = llm_model or get_llm_model()
         self.standard_title = llm_model.get_standard_occupation(self.title)
-        self.standard_skills.set(*llm_model.get_standard_skills(self.skills))
+        self.standard_skills.set(llm_model.get_standard_skills(self.skills))
         self.embedding = llm_model.encode(
             ", ".join(list(self.standard_skills.values_list("label", flat=True)) or []))
         self.save()

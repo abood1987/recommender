@@ -1,11 +1,15 @@
 from pathlib import Path
 
-from django.db.models import Model as DjangoModel
+import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from recommender_core.embeddings.base import BaseEmbeddingModel
 from recommender_core.extractor.base import BaseExtractorModel
 from django.apps import apps
 from recommender_core.utils.collector import DataCollector, ClassTracer
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from recommender_core.models import BaseVectorModel
 
 
 class FlanT5Model(BaseExtractorModel, metaclass=ClassTracer):
@@ -27,8 +31,8 @@ class FlanT5Model(BaseExtractorModel, metaclass=ClassTracer):
         self.occupation_description_prompt = occupation_description_prompt
         self.tokenizer, self.model = self._get_model()
         self.embedding_model = embedding_model
-        self.skill_kb: DjangoModel = apps.get_model(app_label="recommender_kb", model_name="Skill")
-        self.occupation_kb: DjangoModel = apps.get_model(app_label="recommender_kb", model_name="Occupation")
+        self.skill_kb: BaseVectorModel = apps.get_model(app_label="recommender_kb", model_name="Skill")
+        self.occupation_kb: BaseVectorModel = apps.get_model(app_label="recommender_kb", model_name="Occupation")
         self.collector = DataCollector()
 
     @ClassTracer.exclude
@@ -51,10 +55,11 @@ class FlanT5Model(BaseExtractorModel, metaclass=ClassTracer):
         Start direct prompt using FLAN-T5.
         """
         inputs = self.tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True)
-        outputs = self.model.generate(inputs.input_ids, max_length=512, num_beams=5, early_stopping=True)
+        with torch.no_grad(): # No training, just predictions => Disables gradient tracking (Faster & Memory Efficient)
+            outputs = self.model.generate(inputs.input_ids, max_length=512, num_beams=5, early_stopping=True)
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    def match_with_kb(self, model: DjangoModel, skill_description: str):
+    def match_with_kb(self, model: "BaseVectorModel", skill_description: str):
         matched_objects = model.search(skill_description)
         return matched_objects.first() if matched_objects.exists() else None
 
@@ -72,5 +77,6 @@ class FlanT5Model(BaseExtractorModel, metaclass=ClassTracer):
         description = self.start_prompt(self.occupation_description_prompt % user_input)
         return self.match_with_kb(self.occupation_kb, description)
 
+    @ClassTracer.exclude
     def encode(self, text) -> list[float]:
         return self.embedding_model.encode(text)
