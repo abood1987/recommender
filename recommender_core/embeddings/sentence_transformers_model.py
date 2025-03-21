@@ -1,12 +1,10 @@
-import os
 from pathlib import Path
-
 from sentence_transformers import SentenceTransformer
 from torch import Tensor
-from recommender_core.embeddings.base import BaseEmbeddingModel
+from recommender_core.embeddings.base import EmbeddingModelBase
 
 
-class SentenceTransformerModel(BaseEmbeddingModel):
+class SentenceTransformerModel(EmbeddingModelBase):
     def __init__(self, model_name: str, model_path: str| None = None, device: str| None =None):
         super().__init__(model_name, model_path, device)
         self.model_path  = model_path
@@ -18,7 +16,7 @@ class SentenceTransformerModel(BaseEmbeddingModel):
             return SentenceTransformer(self.model_name)
         try:
             return SentenceTransformer(self.model_path)
-        except Exception as e:
+        except Exception as _:
             path = Path(self.model_path)
             path.mkdir(parents=True, exist_ok=True)
             model = SentenceTransformer(self.model_name)
@@ -30,5 +28,6 @@ class SentenceTransformerModel(BaseEmbeddingModel):
             sentences,
             device=self.device,
             normalize_embeddings=True,
-            convert_to_tensor=True
+            convert_to_tensor=True,
+            **kwargs
         )

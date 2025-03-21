@@ -1,0 +1,19 @@
+{% extends "recommender_test/modal_base_template.html" %}
+
+{% block body %}
+    <p class="mb-0">Would you like to start this test case?</p>
+    <div class="form-group">
+        <label for="id_select_method">Select Method</label>
+        <select class="form-control" id="id_select_method" name="select_method">
+            {% for key, val in methods.items %}
+                {% if forloop.first %}
+                    <option value="{{ key }}" selected>{{ val }}</option>
+                {% else %}
+                    <option value="{{ key }}">{{ val }}</option>
+
+                {% endif %}
+            {% endfor %}
+        </select>
+      </div>
+
+{% endblock %}

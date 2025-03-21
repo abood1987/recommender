@@ -71,6 +71,7 @@ class Skill(BaseVectorModel):
     related_skills = models.ManyToManyField("Skill", through="Skill2Skill", related_name='original_skills')
     alt_labels = ArrayField(models.CharField(max_length=255), blank=True, null=True)
     hidden_labels = ArrayField(models.CharField(max_length=200), blank=True, null=True)
+    broader_uri = models.URLField(null=True, blank=True)
 
     class Meta:
         indexes = [

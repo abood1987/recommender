@@ -1,10 +1,18 @@
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class ObjectKey:
+    obj_type: object
+    args: tuple
+    kwargs: frozenset
+
+
 class Singleton(object):
-    _instance = None
+    _instances = {}
 
     def __new__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-        elif cls.__init__:
-            # call __init__ function just the first time
-            cls.__init__ = lambda self, *args, **kwargs: None   # __init__ function is "<lambda>" now.
-        return cls._instance
+        obj_key = ObjectKey(obj_type=cls, args=args, kwargs=frozenset(kwargs.items()))
+        if obj_key not in cls._instances:
+            cls._instances[obj_key] = super().__new__(cls)
+        return cls._instances[obj_key]

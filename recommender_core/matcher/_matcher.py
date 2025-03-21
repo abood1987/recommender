@@ -6,7 +6,7 @@ import numpy as np
 from sentence_transformers import util
 import torch
 
-from recommender_core.embeddings.base import BaseEmbeddingModel
+from recommender_core.embeddings.base import EmbeddingModelBase
 from recommender_core.utils.helper import get_embedding_model
 from recommender_kb.models import Skill, Occupation
 
@@ -16,7 +16,7 @@ class KBMatcher:
 
         self.threshold = threshold
 
-        self._model: BaseEmbeddingModel = get_embedding_model()
+        self._model: EmbeddingModelBase = get_embedding_model()
         self._load_skills()
         self._load_occupations()
         self._create_skill_embeddings()

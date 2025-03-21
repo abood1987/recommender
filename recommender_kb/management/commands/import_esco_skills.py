@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 from django.core.management.base import BaseCommand, CommandError
+from nltk.sem.chat80 import borders
+
 from recommender_kb.models import (
     Occupation,
     Skill,
@@ -10,15 +12,12 @@ from recommender_kb.models import (
 
 class Command(BaseCommand):
     help = "Import ESCO skills & occupations from csv"
+    requires_system_checks = []
 
     def add_arguments(self, parser):
         parser.add_argument("--path", type=str, required=True, help="Container path where ISCO CSV files are located.")
         parser.add_argument("--clear", action="store_true", help="Delete old data before importing")
-        parser.add_argument("--ignore-occ", action="store_true", dest="ignore_occupations", help="ignore the import of the occupations.")
-        parser.add_argument("--ignore-skills", action="store_true", dest="ignore_skills", help="ignore the import of the skills.")
-        parser.add_argument("--ignore-isco-groups", action="store_true", dest="ignore_isco_groups", help="ignore the import of the isco groups.")
-        parser.add_argument("--ignore-rel-skills", action="store_true", dest="ignore_rel_skills", help="ignore the import of the skills relations.")
-        parser.add_argument("--ignore-rel-occ-skills", action="store_true", dest="ignore_rel_occ_skills", help="ignore the import of the occupations-skills relations.")
+        parser.add_argument("--broader", action="store_true", help="Import broader data")
 
     def handle(self, *args, **options):
         path = options['path']
@@ -27,29 +26,30 @@ class Command(BaseCommand):
             raise CommandError(f"The specified path does not exist: {path}")
 
         self.stdout.write("---START---")
-        if options.get("clear", False):
-            self.clear_data()
-            self.stdout.write("---Old data cleared----")
+        if options.get("broader", False):
+            self.import_broader_rel(path)
+        else:
+            if options.get("clear", False):
+                self.clear_data()
+                self.stdout.write("---Old data cleared----")
 
-        if not options.get("ignore_isco_groups", False):
             self.import_isco_groups(path)
             self.stdout.write("---ISCO groups imported----")
 
-        if not options.get("ignore_occupations", False):
             self.import_occupations(path)
             self.stdout.write("---Occupations imported----")
 
-        if not options.get("ignore_skills", False):
             self.import_skills(path)
             self.stdout.write("---Skills imported----")
 
-        if not options.get("ignore_rel_skills", False):
             self.import_skills_relations(path)
             self.stdout.write("---Skills-Skills relations imported----")
 
-        if not options.get("ignore_rel_occ_skills", False):
             self.import_occupations_skills_relations(path)
             self.stdout.write("---occupations-Skills relations imported----")
+
+            self.import_broader_rel(path)
+            self.stdout.write("---broader relations imported----")
         self.stdout.write("---END---")
 
     def get_file_path(self, path: str, file_name: str) -> str:
@@ -88,7 +88,6 @@ class Command(BaseCommand):
             "preferredLabel": "label",
             "description": "description",
         }
-        embedding_fields = ["preferredLabel", "description"]
         df = self.get_dataframe(path, "ISCOGroups_en.csv", dtype={"code": str})
         for index, row in df.iterrows():
             ISCOGroup.objects.create(**self.get_instance_dict(row, csv_map))
@@ -111,7 +110,6 @@ class Command(BaseCommand):
                 "function": lambda val: val.splitlines()
             }
         }
-        embedding_fields = ["preferredLabel", "altLabels", "hiddenLabels", "description"]
         df = self.get_dataframe(path, "occupations_en.csv", dtype={"iscoGroup": str})
         for index, row in df.iterrows():
             Occupation.objects.create(**self.get_instance_dict(row, csv_map))
@@ -134,7 +132,6 @@ class Command(BaseCommand):
                 "function": lambda val: val.splitlines()
             }
         }
-        embedding_fields = ["preferredLabel", "altLabels", "hiddenLabels", "description"]
         df = self.get_dataframe(path, "skills_en.csv")
         for index, row in df.iterrows():
             Skill.objects.create(**self.get_instance_dict(row, csv_map))
@@ -151,31 +148,13 @@ class Command(BaseCommand):
             o = Occupation.objects.get(uri=row["occupationUri"])
             o.skills.add(Skill.objects.get(uri=row["skillUri"]), through_defaults={"type": row["relationType"]})
 
-"""
-# The best hybrid database for your use case is Weaviate.
-Why Weaviate?
-
-    Built-in Vector and Graph Capabilities:
-        Weaviate natively combines vector search with a semantic graph, making it ideal for storing relationships between entities (skills, occupations, knowledge) and querying them efficiently.
-
-    Ease of Use:
-        It has a simple API and supports querying both relationships and vectors seamlessly using GraphQL and REST.
-
-    Scalability:
-        Designed to handle large datasets with both relational and vector-based queries.
-
-    Customizable Embeddings:
-        Supports integration with various embedding models (e.g., OpenAI, HuggingFace) to vectorize your data directly.
-
-    Active Development and Community:
-        Regular updates, strong documentation, and an active user community make it a future-proof choice.
-
-
-
-# https://ec.europa.eu/esco/api/search ? language=en&type=occupation&text=manager (offset=0 & limit = 100)
-
-# https://ec.europa.eu/esco/api/resource/occupation?uri=some occupation url & language=en
-
-# https://ec.europa.eu/esco/api/resource/related
-# https://data.europa.eu/esco/concept-scheme/occupations&relation=hasTopConcept&language=en&full=true
-"""
+    def import_broader_rel(self, path: str):
+        df = self.get_dataframe(path, "broaderRelationsSkillPillar_en.csv", dtype={"code": str})
+        for index, row in df.iterrows():
+            skills = Skill.objects.filter(uri=row["conceptUri"])
+            if not skills.exists():
+                print("skills", row["conceptUri"])
+                continue
+            skill = skills.get()
+            skill.broader_uri = row["broaderUri"]
+            skill.save()

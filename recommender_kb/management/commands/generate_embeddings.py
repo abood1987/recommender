@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from recommender_core.embeddings.base import BaseEmbeddingModel
+from recommender_core.embeddings.base import EmbeddingModelBase
 from recommender_core.utils.helper import get_embedding_model
 from recommender_kb.models import (
     Occupation,
@@ -9,10 +9,11 @@ from recommender_kb.models import (
 
 class Command(BaseCommand):
     help = "Generate ESCO embeddings"
+    requires_system_checks = []
 
     def __init__(self, stdout=None, stderr=None, no_color=False, force_color=False):
         super().__init__(stdout, stderr, no_color, force_color)
-        self.embedding_model: BaseEmbeddingModel = get_embedding_model()
+        self.embedding_model: EmbeddingModelBase = get_embedding_model()
 
     def add_arguments(self, parser):
         parser.add_argument("--clear", action="store_true", help="Delete old embeddings")
@@ -61,16 +62,13 @@ class Command(BaseCommand):
         model.objects.bulk_update(queryset, ["embedding"])
 
     def generate_isco_groups_embeddings(self):
-        # embedding_fields = {"label": str, "description": str}
-        embedding_fields = {"description": str}
+        embedding_fields = {"description": str, "label": str}
         self.update_model(ISCOGroup, embedding_fields)
 
     def generate_occupations_embeddings(self):
-        # embedding_fields = {"label": str, "alt_labels": list, "hidden_labels": list, "description": str}
-        embedding_fields = {"description": str}
+        embedding_fields = {"description": str, "label": str, "alt_labels": list}
         self.update_model(Occupation, embedding_fields)
 
     def generate_skills_embeddings(self):
-        # embedding_fields = {"label": str, "alt_labels": list, "hidden_labels": list, "description": str}
-        embedding_fields = {"description": str}
+        embedding_fields = {"description": str, "label": str, "alt_labels": list}
         self.update_model(Skill, embedding_fields)

@@ -10,14 +10,29 @@ class DataCollector(Singleton):
 
 class ClassTracer(ABCMeta):
     collector = DataCollector()
+    active = False
 
     def __new__(cls, class_name, bases, class_dict):
+        if not cls.active:
+            cls.active = True
+            return type.__new__(cls, class_name, bases, class_dict)
+
         new_class_dict = {}
-        for attributeName, attribute in class_dict.items():
+        for attr_name, attribute in class_dict.items():
             if isinstance(attribute, FunctionType) and not getattr(attribute, "_exclude_from_tracing", False):
                 # replace it with a wrapped version
                 attribute = ClassTracer.wrapper(attribute)
-            new_class_dict[attributeName] = attribute
+            new_class_dict[attr_name] = attribute
+
+        for base in bases:
+            if issubclass(base, ClassTracer):
+                for attr_name in dir(base):
+                    if attr_name in new_class_dict: # already overridden, skip
+                        continue
+                    attr = getattr(base, attr_name)
+                    if isinstance(attr, FunctionType) and not getattr(attr, "_exclude_from_tracing", False):
+                        new_class_dict[attr_name] = cls.wrapper(attr)
+
         return type.__new__(cls, class_name, bases, new_class_dict)
 
     @staticmethod

@@ -6,6 +6,7 @@ from recommender_profile.models import UserProfile, TaskProfile, Address
 
 class Command(BaseCommand):
     help = "Import skills & occupations from csv"
+    requires_system_checks = False
 
     def add_arguments(self, parser):
         parser.add_argument("--path", type=str, required=True, help="Container path where external CSV files are located.")

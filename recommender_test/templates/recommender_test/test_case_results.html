@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load prettyjson %}
+{% load test_tags %}
 
 {% block extra_head %}
     {% prettyjson_setup %}
@@ -33,7 +34,7 @@
                     {% for user in object.users.all %}
                         <div class="card mb-3 shadow-sm border">
                             <div class="card-body">
-                                <div>{{ user.skills }}</div>
+                                <div>(User: {{ user.id }})  {{ user.skills }}</div>
                                 <ul class="list-group list-group-flush">
                                     {% for skill in user.standard_skills.all %}
                                         <li class="ml-4">{{ skill }}</li>
@@ -53,6 +54,7 @@
                     {% for task in object.tasks.all %}
                         <div class="card mb-3 shadow-sm border">
                             <div class="card-body">
+                                <div>{% get_recommendation task object.users.all %}</div>
                                 <div>{{ task.title }} --> {{ task.standard_title }}</div>
                                 <hr>
                                 <div>{{ task.skills }}</div>

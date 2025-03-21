@@ -1,5 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
-
+import json
 from bootstrap_modal_forms.generic import (
     BSModalCreateView,
     BSModalUpdateView,
@@ -13,8 +13,10 @@ from django_filters.views import FilterView
 from django_tables2 import tables, A, LinkColumn, TemplateColumn
 from django_tables2.views import SingleTableMixin
 
-from recommender_core.utils.collector import DataCollector
-from recommender_core.utils.helper import get_llm_model
+from recommender.settings import VECTOR_SETTINGS, EXTRACTOR_SIMPLE, EXTRACTOR_NER_JOBBERT, EXTRACTOR_NER_ESCOXLMR, \
+    EXTRACTOR_LLM, LLM_FLAN_T5, LLM_FLAN_T5_FT
+from recommender_core.utils.collector import DataCollector, ClassTracer
+from recommender_core.utils.helper import get_extractor
 from recommender_test.forms import TestCaseForm
 from recommender_test.models import TestCase
 
@@ -75,29 +77,46 @@ class DeleteTestCaseView(BSModalDeleteView):
 
 class StartTestCaseView(BSModalReadView):
     model = TestCase
-    template_name = "recommender_test/modal_base_template.html"
+    template_name = "recommender_test/test_case_start.html"
     extra_context = {
-        "content": "Would you like to start this test case?",
         "btn_text": "Start",
         "form_title": "Start Test Case",
+        "methods": {
+            "simple_match": "Simple match",
+            "jobbert": "Jobbert",
+            "escoxlmr": "Escoxlmr",
+            "flat_t5": "Flat T5",
+            "flat_t5_ft": "Flat T5 (fine tuning)"
+        }
+    }
+    METHODS_MAP = {
+        "simple_match": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_SIMPLE},
+        "jobbert": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_NER_JOBBERT},
+        "escoxlmr": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_NER_ESCOXLMR},
+        "flat_t5": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5},
+        "flat_t5_ft": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5_FT},
     }
 
-    def get(self, request, *args, **kwargs):
-        print(DataCollector().data)
-        return super().get(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        ClassTracer.active = True
+        DataCollector().data.clear()
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        llm_model = get_llm_model()
         instance = self.get_object()
+        method = request.POST.get("select_method")
+        print(method)
+        print(self.METHODS_MAP[method])
+        extractor = get_extractor(json.dumps(self.METHODS_MAP[method]))
 
         with ThreadPoolExecutor() as executor:
             # Run user and task processing in parallel
             futures = []
             for u in instance.users.all():
-                futures.append(executor.submit(u.generate_standard_skills_and_embedding, llm_model))
+                futures.append(executor.submit(u.generate_standard_skills_and_embedding, extractor))
 
             for s in instance.tasks.all():
-                futures.append(executor.submit(s.generate_standard_skills_and_embedding, llm_model))
+                futures.append(executor.submit(s.generate_standard_skills_and_embedding, extractor))
 
             for future in futures: # Wait for all tasks to finish
                 future.result()

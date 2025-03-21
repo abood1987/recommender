@@ -1,13 +1,11 @@
 from abc import ABC
-
 import torch
-
 from recommender_core.utils.singleton import Singleton
 
 
-class BaseEmbeddingModel(Singleton, ABC):
+class EmbeddingModelBase(Singleton, ABC):
     """
-    Base for all the embedding models.
+    Base for all embedding models.
     """
 
     def __init__(self, model_name: str, model_path: str| None = None, device: str| None = None,):
