@@ -1,0 +1,603 @@
+[
+    {
+      "job_id": "job1",
+      "title": "Hospice Care Assistant",
+      "requirements": [
+        "Completed qualification course in life, death, and grief counseling",
+        "40-hour internship in hospice or palliative care",
+        "Respectful and empathetic communication",
+        "Availability of at least 2 hours per week"
+      ]
+    },
+    {
+      "job_id": "job2",
+      "title": "Social Work Assistant in Residential Community",
+      "requirements": [
+        "Reliability – adhere to agreements",
+        "Empathy for people with disabilities",
+        "Sociable and open-minded",
+        "Willingness to help and engage"
+      ]
+    },
+    {
+      "job_id": "job3",
+      "title": "Software Developer",
+      "requirements": [
+        "Experience in Python, JavaScript, or Java",
+        "Familiarity with agile methodologies (Scrum, Kanban)",
+        "Team player with self-driven attitude",
+        "Willingness to learn new technologies"
+      ]
+    },
+    {
+      "job_id": "job4",
+      "title": "Graphic Designer",
+      "requirements": [
+        "Proficiency in Adobe Creative Suite (Photoshop, Illustrator, InDesign)",
+        "Strong sense of aesthetics and attention to detail",
+        "Portfolio of creative projects",
+        "Good communication and time management"
+      ]
+    },
+    {
+      "job_id": "job5",
+      "title": "Marketing Assistant",
+      "requirements": [
+        "Knowledge of digital marketing tools and social media platforms",
+        "Analytical thinking and creativity",
+        "Basic SEO and content writing experience",
+        "Ability to work in a fast-paced environment"
+      ]
+    },
+    {
+      "job_id": "job6",
+      "title": "Customer Support Representative",
+      "requirements": [
+        "Excellent verbal and written communication",
+        "Patience and problem-solving skills",
+        "Experience with helpdesk systems is a plus",
+        "Ability to multitask and stay calm under pressure"
+      ]
+    },
+    {
+      "job_id": "job7",
+      "title": "Administrative Assistant",
+      "requirements": [
+        "Strong organizational and multitasking skills",
+        "Experience with Microsoft Office (Word, Excel, Outlook)",
+        "Professional demeanor and confidentiality",
+        "Time management and scheduling experience"
+      ]
+    },
+    {
+      "job_id": "job8",
+      "title": "Data Analyst",
+      "requirements": [
+        "Proficiency in Excel, SQL, and data visualization tools (e.g. Tableau)",
+        "Strong analytical and statistical skills",
+        "Attention to detail and logical reasoning",
+        "Ability to interpret and present data clearly"
+      ]
+    },
+    {
+      "job_id": "job9",
+      "title": "Elementary School Teacher",
+      "requirements": [
+        "Degree in education or related field",
+        "Experience in classroom management",
+        "Creative and engaging teaching methods",
+        "Patience and excellent communication"
+      ]
+    },
+    {
+      "job_id": "job10",
+      "title": "Warehouse Worker",
+      "requirements": [
+        "Ability to lift and move heavy items",
+        "Basic inventory tracking experience",
+        "Teamwork and reliability",
+        "Willingness to work flexible shifts"
+      ]
+    },
+    {
+      "job_id": "job11",
+      "title": "Human Resources Assistant",
+      "requirements": [
+        "Basic knowledge of labor laws and HR practices",
+        "Excellent interpersonal and communication skills",
+        "Experience with HR software is a plus",
+        "Discretion and organizational skills"
+      ]
+    },
+    {
+      "job_id": "job12",
+      "title": "Nurse (Registered or Practical)",
+      "requirements": [
+        "Valid nursing license",
+        "Compassionate patient care",
+        "Experience in administering medication and basic procedures",
+        "Ability to stay calm in emergencies"
+      ]
+    },
+    {
+      "job_id": "job13",
+      "title": "Restaurant Server",
+      "requirements": [
+        "Friendly and attentive service",
+        "Experience with POS systems",
+        "Ability to handle busy environments",
+        "Team spirit and punctuality"
+      ]
+    },
+    {
+      "job_id": "job14",
+      "title": "Sales Representative",
+      "requirements": [
+        "Strong communication and persuasion skills",
+        "Experience in B2B or B2C sales",
+        "Ability to meet targets and handle rejections",
+        "Customer-focused mindset"
+      ]
+    },
+    {
+      "job_id": "job15",
+      "title": "Electrician",
+      "requirements": [
+        "Valid electrician certification or license",
+        "Knowledge of electrical codes and safety procedures",
+        "Experience with residential or commercial systems",
+        "Problem-solving and attention to detail"
+      ]
+    },
+    {
+      "job_id": "job16",
+      "title": "UX/UI Designer",
+      "requirements": [
+        "Understanding of user-centered design principles",
+        "Experience with Figma, Sketch, or Adobe XD",
+        "Ability to conduct user testing",
+        "Strong visual communication skills"
+      ]
+    },
+    {
+      "job_id": "job17",
+      "title": "Mobile App Developer",
+      "requirements": [
+        "Proficiency in iOS or Android SDK",
+        "Understanding of REST APIs and mobile design patterns",
+        "Portfolio of published apps",
+        "Collaborative and adaptive work style"
+      ]
+    },
+    {
+      "job_id": "job18",
+      "title": "Translator (EN <-> DE)",
+      "requirements": [
+        "Fluent in English and German",
+        "Experience in technical or legal translation",
+        "Strong grammar and terminology skills",
+        "Attention to tone and context"
+      ]
+    },
+    {
+      "job_id": "job19",
+      "title": "Content Writer",
+      "requirements": [
+        "Fluent written English",
+        "Creative writing and storytelling skills",
+        "Understanding of SEO and keyword placement",
+        "Proofreading and editing experience"
+      ]
+    },
+    {
+      "job_id": "job20",
+      "title": "Fitness Trainer",
+      "requirements": [
+        "Certified fitness training qualification",
+        "Experience in group or individual coaching",
+        "Knowledge of nutrition and injury prevention",
+        "Motivational and approachable attitude"
+      ]
+    },
+    {
+      "job_id": "job21",
+      "title": "Hospice Care Assistant",
+      "requirements": [
+        "Completed qualification course in life, death, and grief counseling",
+        "40-hour internship in hospice or palliative care",
+        "Respectful and empathetic communication",
+        "Availability of at least 2 hours per week"
+      ]
+    },
+    {
+      "job_id": "job22",
+      "title": "Social Work Assistant in Residential Community",
+      "requirements": [
+        "Reliability – adhere to agreements",
+        "Empathy for people with disabilities",
+        "Sociable and open-minded",
+        "Willingness to help and engage"
+      ]
+    },
+    {
+      "job_id": "job23",
+      "title": "Public Health Outreach Worker",
+      "requirements": [
+        "Non-judgmental and professional demeanor",
+        "Experience with diverse or vulnerable populations",
+        "Excellent verbal communication skills",
+        "Basic knowledge of nutrition, hygiene, or community health"
+      ]
+    },
+    {
+      "job_id": "job24",
+      "title": "Community Development Coordinator",
+      "requirements": [
+        "Experience in community engagement",
+        "Stakeholder communication",
+        "Event coordination experience",
+        "Ability to lead and plan community projects"
+      ]
+    },
+    {
+      "job_id": "job25",
+      "title": "Animal Shelter Assistant",
+      "requirements": [
+        "Understanding of animal behavior",
+        "Calm demeanor when handling animals",
+        "Comfortable with physical assessments",
+        "Experience working with pets or strays"
+      ]
+    },
+    {
+      "job_id": "job26",
+      "title": "Administrative Assistant",
+      "requirements": [
+        "Good organizational and time management skills",
+        "Proficient with Microsoft Office",
+        "Clear communication style",
+        "Ability to multitask and prioritize tasks"
+      ]
+    },
+    {
+      "job_id": "job27",
+      "title": "Community Center Volunteer",
+      "requirements": [
+        "Friendly and approachable",
+        "Enjoyment in group activities and engagement",
+        "Empathy for different life situations",
+        "Basic planning or coordination experience"
+      ]
+    },
+    {
+      "job_id": "job28",
+      "title": "Patient Care Assistant",
+      "requirements": [
+        "Compassionate patient care",
+        "Attention to detail",
+        "Team collaboration",
+        "Ability to work in a fast-paced healthcare environment"
+      ]
+    },
+    {
+      "job_id": "job29",
+      "title": "Fundraising and Grant Support Officer",
+      "requirements": [
+        "Experience in grant writing or acquisition",
+        "Public speaking and communication",
+        "Organizational and planning skills",
+        "Passion for nonprofit work"
+      ]
+    },
+    {
+      "job_id": "job30",
+      "title": "Volunteer Coordinator",
+      "requirements": [
+        "Leadership skills",
+        "Time management and scheduling",
+        "Adaptability",
+        "Experience in community programs or outreach"
+      ]
+    },
+    {
+      "job_id": "job31",
+      "title": "CRM and Communications Assistant",
+      "requirements": [
+        "Experience using CRM systems like InfusionSoft",
+        "Excellent written communication",
+        "Basic graphic or digital media knowledge",
+        "Time management"
+      ]
+    },
+    {
+      "job_id": "job32",
+      "title": "Youth Mentoring Program Facilitator",
+      "requirements": [
+        "Empathy and patience",
+        "Experience with children or teens",
+        "Ability to plan group activities",
+        "Positive role model behavior"
+      ]
+    },
+    {
+      "job_id": "job33",
+      "title": "Outreach & Engagement Intern",
+      "requirements": [
+        "Willingness to help in underserved communities",
+        "Basic data collection and reporting",
+        "Reliable and open communicator",
+        "Able to represent the organization positively"
+      ]
+    },
+    {
+      "job_id": "job34",
+      "title": "Animal Behavior Observation Assistant",
+      "requirements": [
+        "Knowledge of animal traits and behavior",
+        "Note-taking and observation skills",
+        "Calm presence",
+        "Comfortable working with shelter staff"
+      ]
+    },
+    {
+      "job_id": "job35",
+      "title": "Family Services Support Worker",
+      "requirements": [
+        "Empathy for family and emotional stress situations",
+        "Basic administrative skills",
+        "Clear and compassionate communication",
+        "Experience in care or social work is a plus"
+      ]
+    },
+    {
+      "job_id": "job36",
+      "title": "Job Readiness Workshop Assistant",
+      "requirements": [
+        "Basic computer skills",
+        "Clear communicator",
+        "Supportive and motivational attitude",
+        "Can assist with resume writing or job search tips"
+      ]
+    },
+    {
+      "job_id": "job37",
+      "title": "Nonprofit Communications Intern",
+      "requirements": [
+        "Experience with Adobe or digital communication tools",
+        "Basic understanding of nonprofit work",
+        "Interest in writing and visual storytelling",
+        "Cultural sensitivity"
+      ]
+    },
+    {
+      "job_id": "job38",
+      "title": "Housing Support Caseworker (Entry-Level)",
+      "requirements": [
+        "Experience in helping or advocating for others",
+        "Time management and documentation",
+        "Knowledge of housing or community systems is a plus",
+        "Empathy and persistence"
+      ]
+    },
+    {
+      "job_id": "job39",
+      "title": "Event Volunteer - Community Health Day",
+      "requirements": [
+        "Friendly and welcoming attitude",
+        "Comfortable talking to the public",
+        "Able to help set up or manage booths",
+        "Interest in health education or outreach"
+      ]
+    },
+    {
+      "job_id": "job40",
+      "title": "Digital Outreach Assistant",
+      "requirements": [
+        "Basic content creation (social media or email)",
+        "Experience with tools like Canva or CRM",
+        "Team collaboration",
+        "Organized and responsive"
+      ]
+    },
+    {
+      "job_id": "job41",
+      "title": "Community Wellness Organizer",
+      "requirements": [
+        "Experience organizing wellness events or public health campaigns",
+        "Comfortable coordinating vendors and logistics",
+        "Friendly and supportive presence at events",
+        "Basic data entry or tracking knowledge"
+      ]
+    },
+    {
+      "job_id": "job42",
+      "title": "Volunteer Team Leader",
+      "requirements": [
+        "Previous experience leading or mentoring volunteer teams",
+        "Excellent written and verbal communication",
+        "Quick to adapt in fast-changing environments",
+        "Organizational and people management skills"
+      ]
+    },
+    {
+      "job_id": "job43",
+      "title": "Animal Welfare Program Assistant",
+      "requirements": [
+        "Animal care experience (home or shelter)",
+        "Basic knowledge of animal first aid",
+        "Comfortable in active, sometimes stressful environments",
+        "Works well during long shifts and with teams"
+      ]
+    },
+    {
+      "job_id": "job44",
+      "title": "Multicultural Outreach Support",
+      "requirements": [
+        "Experience working with diverse populations",
+        "Empathetic and culturally sensitive communication",
+        "Fluent in at least two languages",
+        "Comfortable with form-filling and documentation"
+      ]
+    },
+    {
+      "job_id": "job45",
+      "title": "Health Education Facilitator",
+      "requirements": [
+        "Experience delivering health-related workshops",
+        "Peer mentoring or group facilitation skills",
+        "Ability to adapt messaging to different age groups",
+        "Basic understanding of community health"
+      ]
+    },
+    {
+      "job_id": "job46",
+      "title": "Event Logistics Assistant",
+      "requirements": [
+        "Comfortable managing time, space, and materials at public events",
+        "Strong organizational skills",
+        "Positive and responsive under pressure",
+        "Experience coordinating community booths or tables"
+      ]
+    },
+    {
+      "job_id": "job47",
+      "title": "Nonprofit Office Support",
+      "requirements": [
+        "Experience with administrative tasks and data entry",
+        "Basic spreadsheet or CRM tool usage",
+        "Attention to detail and strong follow-up habits",
+        "Friendly and professional demeanor"
+      ]
+    },
+    {
+      "job_id": "job48",
+      "title": "Community Language Support Aide",
+      "requirements": [
+        "Fluent bilingual speaker (e.g., English-German)",
+        "Able to translate basic documents and conversations",
+        "Experience supporting immigrants or non-native speakers",
+        "Patience and clear communicator"
+      ]
+    },
+    {
+      "job_id": "job49",
+      "title": "Pet Shelter Support Volunteer",
+      "requirements": [
+        "Loves working with animals",
+        "Understands animal signals and behavior",
+        "Can assist with cleaning, feeding, or walking",
+        "Resilient in emotionally challenging environments"
+      ]
+    },
+    {
+      "job_id": "job50",
+      "title": "Community Booth Representative",
+      "requirements": [
+        "Friendly and approachable personality",
+        "Enjoys helping with outreach tables or booths",
+        "Able to manage flyers, forms, or small giveaways",
+        "Willing to talk to passersby and explain services"
+      ]
+    },
+    {
+      "job_id": "job51",
+      "title": "Community Wellness Event Coordinator",
+      "requirements": [
+        "Organized community wellness days",
+        "Experience coordinating vendors and event logistics",
+        "Friendly and supportive with diverse attendees",
+        "Familiar with data entry for post-event tracking"
+      ]
+    },
+    {
+      "job_id": "job52",
+      "title": "Multilingual Support Assistant",
+      "requirements": [
+        "Fluent in two or more languages",
+        "Reliable and professional communication",
+        "Comfortable filling out official forms",
+        "Experience with diverse populations"
+      ]
+    },
+    {
+      "job_id": "job53",
+      "title": "Animal Care Volunteer",
+      "requirements": [
+        "Animal lover with experience caring for pets",
+        "Trained in basic first aid for animals",
+        "Calm in high-stress animal situations",
+        "Willing to work long, active shifts"
+      ]
+    },
+    {
+      "job_id": "job54",
+      "title": "Community Engagement Specialist",
+      "requirements": [
+        "Coordinated local food drives or wellness events",
+        "Excellent written communication",
+        "Experienced in leading volunteer teams",
+        "Quick to adapt and organized under pressure"
+      ]
+    },
+    {
+      "job_id": "job55",
+      "title": "Peer Health Educator",
+      "requirements": [
+        "Experience in peer mentoring",
+        "Led group-based health education sessions",
+        "Comfortable managing small groups",
+        "Values inclusive and respectful communication"
+      ]
+    },
+    {
+      "job_id": "job56",
+      "title": "Event Support Coordinator",
+      "requirements": [
+        "Experience managing community event logistics",
+        "Clear and empathetic communicator",
+        "Calm under pressure and detail-oriented",
+        "Enjoys helping with physical event setup"
+      ]
+    },
+    {
+      "job_id": "job57",
+      "title": "Veterinary Reception Assistant",
+      "requirements": [
+        "Managed vet appointment schedules",
+        "Comfortable with both animals and people",
+        "Multitasker in a fast-paced setting",
+        "Friendly and calm in stressful moments"
+      ]
+    },
+    {
+      "job_id": "job58",
+      "title": "Shelter Animal Support Worker",
+      "requirements": [
+        "Experience in animal shelters or pet foster care",
+        "Able to observe and respond to animal behavior",
+        "Not afraid of nervous or high-needs animals",
+        "Hands-on and patient personality"
+      ]
+    },
+    {
+      "job_id": "job59",
+      "title": "Cultural Outreach Assistant",
+      "requirements": [
+        "Worked with culturally diverse populations",
+        "Fluent in multiple languages",
+        "Can support events and translate materials",
+        "Professional and friendly with the public"
+      ]
+    },
+    {
+      "job_id": "job60",
+      "title": "Field Operations Aide",
+      "requirements": [
+        "Manages time and logistics effectively",
+        "Comfortable with outdoor or mobile tasks",
+        "Works well with volunteers",
+        "Quick decision-maker and great at adapting"
+      ]
+    }
+  ]
+  
