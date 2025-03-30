@@ -61,13 +61,13 @@ class Command(BaseCommand):
         model.objects.bulk_update(queryset, ["embedding"])
 
     def generate_groups_embeddings(self):
-        embedding_fields = {"description": str, "label": str}
+        embedding_fields = {"label": str}
         self.update_model(SkillGroup, embedding_fields)
 
     def generate_occupations_embeddings(self):
-        embedding_fields = {"description": str, "label": str, "alt_labels": list}
+        embedding_fields = {"label": str, "alt_labels": list}
         self.update_model(Occupation, embedding_fields)
 
     def generate_skills_embeddings(self):
-        embedding_fields = {"description": str, "label": str, "alt_labels": list}
+        embedding_fields = {"label": str, "alt_labels": list}
         self.update_model(Skill, embedding_fields)
