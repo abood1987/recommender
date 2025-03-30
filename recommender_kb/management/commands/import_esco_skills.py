@@ -6,7 +6,7 @@ from nltk.sem.chat80 import borders
 from recommender_kb.models import (
     Occupation,
     Skill,
-    ISCOGroup,
+    SkillGroup,
 )
 
 
@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 self.clear_data()
                 self.stdout.write("---Old data cleared----")
 
-            self.import_isco_groups(path)
+            self.import_groups(path)
             self.stdout.write("---ISCO groups imported----")
 
             self.import_occupations(path)
@@ -79,28 +79,23 @@ class Command(BaseCommand):
     def clear_data(self):
         Occupation.objects.all().delete()
         Skill.objects.all().delete()
-        ISCOGroup.objects.all().delete()
+        SkillGroup.objects.all().delete()
 
-    def import_isco_groups(self, path: str):
+    def import_groups(self, path: str):
         csv_map = {
             "conceptUri": "uri",
-            "code": "code",
             "preferredLabel": "label",
             "description": "description",
         }
-        df = self.get_dataframe(path, "ISCOGroups_en.csv", dtype={"code": str})
+        df = self.get_dataframe(path, "skillGroups_en.csv", dtype={"code": str})
         for index, row in df.iterrows():
-            ISCOGroup.objects.create(**self.get_instance_dict(row, csv_map))
+            SkillGroup.objects.create(**self.get_instance_dict(row, csv_map))
 
     def import_occupations(self, path: str):
         csv_map = {
             "conceptUri": "uri",
             "preferredLabel": "label",
             "description": "description",
-            "iscoGroup": {
-                "field": "isco_group",
-                "function": lambda code: ISCOGroup.objects.get(code=code) if code else None
-            },
             "altLabels": {
                 "field": "alt_labels",
                 "function": lambda val: val.splitlines()
@@ -156,5 +151,16 @@ class Command(BaseCommand):
                 print("skills", row["conceptUri"])
                 continue
             skill = skills.get()
-            skill.broader_uri = row["broaderUri"]
+            broader = SkillGroup.objects.filter(uri=row["broaderUri"])
+            if broader.exists():
+                broader = broader.get()
+            else:
+                s_broader = Skill.objects.filter(uri=row["broaderUri"])
+                if s_broader.exists():
+                    s_broader = s_broader.get()
+                    broader, _ = SkillGroup.objects.get_or_create(label=s_broader.label, uri=s_broader.uri, description=s_broader.description)
+                else:
+                    print("skills", skill.label, "broaderUri", row["broaderUri"])
+                    continue
+            skill.broader = broader
             skill.save()

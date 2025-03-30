@@ -4,7 +4,7 @@ from recommender_profile.models import UserProfile, TaskProfile
 
 class Command(BaseCommand):
     help = "Generate profiles embeddings"
-    requires_system_checks = False
+    requires_system_checks = []
 
     def add_arguments(self, parser):
         parser.add_argument("--ignore-occ", action="store_true", dest="ignore_occupations", help="ignore the import of the occupations.")

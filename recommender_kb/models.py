@@ -5,9 +5,8 @@ from pgvector.django import HnswIndex
 from recommender_core.models import BaseVectorModel
 
 
-class ISCOGroup(BaseVectorModel):
+class SkillGroup(BaseVectorModel):
     uri = models.URLField(unique=True)
-    code = models.CharField(max_length=20, unique=True)
     label = models.CharField(max_length=255)
     description = models.TextField()
 
@@ -32,7 +31,6 @@ class Occupation(BaseVectorModel):
     uri = models.URLField(unique=True)
     label = models.CharField(max_length=255)
     description = models.TextField()
-    isco_group = models.ForeignKey(ISCOGroup, on_delete=models.PROTECT, null=True, blank=True, related_name='occupations')
     skills = models.ManyToManyField("Skill", through="Occupation2Skill", related_name='occupations')
     alt_labels = ArrayField(models.CharField(max_length=255), blank=True, null=True)
     hidden_labels = ArrayField(models.CharField(max_length=200), blank=True, null=True)
@@ -71,7 +69,7 @@ class Skill(BaseVectorModel):
     related_skills = models.ManyToManyField("Skill", through="Skill2Skill", related_name='original_skills')
     alt_labels = ArrayField(models.CharField(max_length=255), blank=True, null=True)
     hidden_labels = ArrayField(models.CharField(max_length=200), blank=True, null=True)
-    broader_uri = models.URLField(null=True, blank=True)
+    broader = models.ForeignKey(SkillGroup, on_delete=models.PROTECT, null=True, blank=True, related_name='skills')
 
     class Meta:
         indexes = [

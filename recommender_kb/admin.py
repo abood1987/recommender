@@ -1,5 +1,5 @@
 from django.contrib import admin
-from recommender_kb.models import ISCOGroup, Occupation, Skill
+from recommender_kb.models import SkillGroup, Occupation, Skill
 
 
 class SemanticSearchAdmin(admin.ModelAdmin):
@@ -10,22 +10,22 @@ class SemanticSearchAdmin(admin.ModelAdmin):
         return queryset, _
 
 
-@admin.register(ISCOGroup)
-class ISCOGroupAdmin(SemanticSearchAdmin):
+@admin.register(SkillGroup)
+class SkillGroupAdmin(SemanticSearchAdmin):
     list_display = ["label", "description"]
     list_filter = ["label", "description"]
     search_fields = ["label", "description"]
 
 
 @admin.register(Occupation)
-class ISCOGroupAdmin(SemanticSearchAdmin):
+class OccupationAdmin(SemanticSearchAdmin):
     list_display = ["label", "description"]
     list_filter = ["label", "description"]
     search_fields = ["label", "description"]
 
 
 @admin.register(Skill)
-class ISCOGroupAdmin(SemanticSearchAdmin):
+class SkillAdmin(SemanticSearchAdmin):
     list_display = ["label", "type", "description"]
     list_filter = ["label", "type", "description"]
     search_fields = ["label", "type", "description"]
