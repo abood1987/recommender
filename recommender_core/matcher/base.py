@@ -2,14 +2,14 @@ from abc import ABC
 from functools import lru_cache
 
 import pandas as pd
-from django.apps import apps
 from django.db.models import QuerySet
-
+from django.apps import apps
 from recommender.settings import VECTOR_SETTINGS
 from recommender_core.embeddings.base import EmbeddingModelBase
-from recommender_core.models import BaseVectorModel
 from recommender_core.utils.singleton import Singleton
-from recommender_profile.models import UserProfile, TaskProfile
+from typing import TYPE_CHECKING, Union
+if TYPE_CHECKING: # solve circular import
+    from recommender_core.models import BaseVectorModel
 
 
 class MatcherBase(Singleton, ABC):
@@ -18,12 +18,14 @@ class MatcherBase(Singleton, ABC):
         self.embedding_model = embedding_model
         self.llm = llm_model
         self.include_broader = kwargs.get('include_broader', False)
-        self.threshold = 1 - VECTOR_SETTINGS["max_distance"]
+        self.top_k = kwargs.get('top_k', None)
+        self.threshold = self.kwargs.get("threshold", 1 - VECTOR_SETTINGS["max_distance"])
         self.skill_kb: "BaseVectorModel" = apps.get_model(app_label="recommender_kb", model_name="Skill")
         self.occupation_kb: "BaseVectorModel" = apps.get_model(app_label="recommender_kb", model_name="Occupation")
 
     @lru_cache(maxsize=None)
     def _users_df(self):
+        UserProfile = apps.get_model("recommender_profile", "UserProfile")
         df = pd.DataFrame.from_records(
             UserProfile.objects.values(
                 "id",
@@ -60,6 +62,7 @@ class MatcherBase(Singleton, ABC):
 
     @lru_cache(maxsize=None)
     def _tasks_df(self):
+        TaskProfile = apps.get_model("recommender_profile", "TaskProfile")
         # Step 1: Query all Tasks and related skills and fallback skills
         df = pd.DataFrame.from_records(
             TaskProfile.objects.values(
@@ -114,19 +117,19 @@ class MatcherBase(Singleton, ABC):
         )
         return group_df
 
-    def _filter_df(self, df: pd.DataFrame, objects: QuerySet[BaseVectorModel] | BaseVectorModel | None = None) -> pd.DataFrame:
+    def _filter_df(self, df: pd.DataFrame, objects: Union["QuerySet[BaseVectorModel]", "BaseVectorModel", None] = None) -> pd.DataFrame:
         if objects is None:
             return df
-        ids = (
-            [objects.id] if isinstance(objects, BaseVectorModel)
-            else list(objects.values_list("id", flat=True))
-        )
+        if hasattr(objects, "id") and not hasattr(objects, "values_list"):
+            ids = [objects.id]
+        else:
+            ids = list(objects.values_list("id", flat=True))
         return df[df["id"].isin(ids)]
 
     def get_recommendations(
             self,
-            users: QuerySet[UserProfile] | UserProfile | None = None,
-            tasks: QuerySet[TaskProfile] | TaskProfile | None = None,
+            users: Union["QuerySet[BaseVectorModel]", "BaseVectorModel", None] = None,
+            tasks: Union["QuerySet[BaseVectorModel]", "BaseVectorModel", None] = None,
     ) -> dict:
         users_df = self._filter_df(self._users_df(), users)
         tasks_df = self._filter_df(self._tasks_df(), tasks)

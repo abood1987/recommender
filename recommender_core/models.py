@@ -12,13 +12,14 @@ class BaseVectorModel(models.Model):
         abstract = True
 
     @classmethod
-    def search(cls, query, max_distance: float | None = None, top_n: int |None = None):
+    def search(cls, query, max_distance: float | None = None, top_k: int |None = None):
         max_distance = max_distance or VECTOR_SETTINGS["max_distance"]
-        top_n = top_n or VECTOR_SETTINGS["top_n"]
+        top_k = top_k or VECTOR_SETTINGS.get("top_k", None)
         vector = get_embedding_model().encode(query) if isinstance(query, str) else query
         distance = CosineDistance("embedding", vector)
-        return (
+        res = (
             cls.objects.annotate(distance=distance)
             .filter(distance__lte=max_distance)
-            .order_by("distance")[:top_n]
+            .order_by("distance")
         )
+        return res[:top_k] if top_k else res

@@ -19,7 +19,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # Extract nested address data
         address_data = validated_data.pop("address")
         # Create the Address object
-        address = Address.objects.create(**address_data)
+        address, _ = Address.objects.get_or_create(**address_data)
         # Create the UserProfile object with the associated Address
         user_profile = UserProfile.objects.create(address=address, **validated_data)
         return user_profile
@@ -29,7 +29,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         address_data = validated_data.pop('address', None)
         if address_data:
             # Create allows a new Address object, because Address may be related to another object
-            address = Address.objects.create(**address_data)
+            address, _ = Address.objects.get_or_create(**address_data)
             instance.address = address
 
         # Update the TaskProfile instance
@@ -51,7 +51,7 @@ class TaskProfileSerializer(serializers.ModelSerializer):
         # Extract nested address data
         address_data = validated_data.pop("address")
         # Create the Address object
-        address = Address.objects.create(**address_data)
+        address, _ = Address.objects.get_or_create(**address_data)
         # Create the TaskProfile object with the associated Address
         task_profile = TaskProfile.objects.create(address=address, **validated_data)
         return task_profile
@@ -61,7 +61,7 @@ class TaskProfileSerializer(serializers.ModelSerializer):
         address_data = validated_data.pop('address', None)
         if address_data:
             # Create allows a new Address object, because Address may be related to another object
-            address = Address.objects.create(**address_data)
+            address, _ = Address.objects.get_or_create(**address_data)
             instance.address = address
 
         # Update the TaskProfile instance

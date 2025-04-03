@@ -2,18 +2,62 @@
 
 {% block body %}
     <p class="mb-0">Would you like to start this test case?</p>
-    <div class="form-group">
-        <label for="id_select_method">Select Method</label>
-        <select class="form-control" id="id_select_method" name="select_method">
-            {% for key, val in methods.items %}
-                {% if forloop.first %}
-                    <option value="{{ key }}" selected>{{ val }}</option>
-                {% else %}
-                    <option value="{{ key }}">{{ val }}</option>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_extractor_methods">Select Extractor</label>
+                <select class="form-control" id="id_extractor_methods" name="extractor_method">
+                    {% for key, val in extractor_methods.items %}
+                        {% if forloop.first %}
+                            <option value="{{ key }}" selected>{{ val }}</option>
+                        {% else %}
+                            <option value="{{ key }}">{{ val }}</option>
 
-                {% endif %}
-            {% endfor %}
-        </select>
-      </div>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_matcher_methods">Select Matcher</label>
+                <select class="form-control" id="id_matcher_methods" name="matcher_method">
+                    {% for key, val in matcher_methods.items %}
+                        {% if forloop.first %}
+                            <option value="{{ key }}" selected>{{ val }}</option>
+                        {% else %}
+                            <option value="{{ key }}">{{ val }}</option>
 
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="id_threshold_rang">Threshold: <span class="rang-value"></span></label>
+                <input id="id_threshold_rang" class="form-control rang-input" name="threshold_value" type="range" min="0.05" max="1" step="0.05" value="0.5" />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="id_fuzzy_threshold_rang">Fuzzy threshold: <span class="rang-value"></span></label>
+                <input id="id_fuzzy_threshold_rang" class="form-control rang-input" name="fuzzy_threshold_value" type="range" min="1" max="100" step="1" value="60" />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="id_top_k_rang">matching top: <span class="rang-value"></span></label>
+                <input id="id_top_k_rang" class="form-control rang-input" name="top_k_matching" type="range" min="1" max="50" step="1" value="50" />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group d-flex align-items-center ml-3">
+                <label for="id_include_broader" class="mb-0">Include Broader</label>
+                <input id="id_include_broader" class="form-check-input" name="include_broader" type="checkbox" />
+            </div>
+        </div>
+    </div>
 {% endblock %}

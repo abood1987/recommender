@@ -27,11 +27,21 @@ class FuzzyMatcher(MatcherBase):
         tasks_ids = tasks_df["id"].tolist()
         tasks_skills = tasks_df["standard_skills"].tolist()
 
-        users_df["matched_jobs"] = users_df["standard_skills"].apply(
-            lambda skills: [
-                tasks_ids[i]
+        def get_matches(user_skills):
+            scores = [
+                (tasks_ids[i], self.fuzzy_match_user_to_job(user_skills, job_sk))
                 for i, job_sk in enumerate(tasks_skills)
-                if self.fuzzy_match_user_to_job(skills, job_sk) >= self.threshold
             ]
-        )
+            filtered = [(tid, score) for tid, score in scores if score >= self.threshold]
+            sorted_filtered = sorted(filtered, key=lambda x: x[1], reverse=True)
+            return [tid for tid, _ in sorted_filtered[:self.top_k]]
+
+        users_df["matched_jobs"] = users_df["standard_skills"].apply(get_matches)
+        # users_df["matched_jobs"] = users_df["standard_skills"].apply(
+        #     lambda skills: [
+        #         tasks_ids[i]
+        #         for i, job_sk in enumerate(tasks_skills)
+        #         if self.fuzzy_match_user_to_job(skills, job_sk) >= self.threshold
+        #     ]
+        # )
         return users_df.set_index("id")["matched_jobs"].to_dict()

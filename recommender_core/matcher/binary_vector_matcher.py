@@ -38,8 +38,16 @@ class BinaryVectorMatcher(MatcherBase):
 
     def _get_recommendations(self, users_df: pd.DataFrame, tasks_df: pd.DataFrame) -> dict:
         sim_matrix_cosine = cosine_similarity(np.stack(users_df["vector"].values), np.stack(tasks_df["vector"].values))
-        users_df['matched_jobs'] = [
-            list(tasks_df.loc[np.where(row >= self.threshold)[0], "id"])
-            for row in sim_matrix_cosine
-        ]
+        task_ids = tasks_df["id"].tolist()
+
+        def get_matches(row):
+            indices = np.where(row >= self.threshold)[0]
+            sorted_indices = indices[np.argsort(row[indices])[::-1][:self.top_k]]
+            return [task_ids[i] for i in sorted_indices]
+
+        users_df['matched_jobs'] = [get_matches(row) for row in sim_matrix_cosine]
+        # users_df['matched_jobs'] = [
+        #     tasks_df.iloc[np.where(row >= self.threshold)[0]]["id"].tolist()
+        #     for row in sim_matrix_cosine
+        # ]
         return users_df.set_index("id")["matched_jobs"].to_dict()

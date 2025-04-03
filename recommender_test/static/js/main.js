@@ -7,7 +7,13 @@ $(document).ready(function() {
             formURL: $(this).attr("href")
         });
     });
-    $('.modal').on('show.bs.modal', function (event) {
+    $(".modal").on("show.bs.modal", function (event) {
         formset.init();
+
+        $(".rang-input").each(function () {
+            $(this).closest(".form-group").find(".rang-value").html(this.value);
+        }).on("input", function () {
+            $(this).closest(".form-group").find(".rang-value").html(this.value);
+        });
     });
 });

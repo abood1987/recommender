@@ -21,6 +21,9 @@
             <button class="nav-link active" id="results-tab" data-toggle="tab" data-target="#results" type="button" role="tab" aria-controls="results" aria-selected="true">Results</button>
         </li>
         <li class="nav-item" role="presentation">
+            <button class="nav-link" id="matching-map-tab" data-toggle="tab" data-target="#matching-map" type="button" role="tab" aria-controls="matching-map" aria-selected="false">Matching map</button>
+        </li>
+        <li class="nav-item" role="presentation">
             <button class="nav-link" id="traces-tab" data-toggle="tab" data-target="#traces" type="button" role="tab" aria-controls="traces" aria-selected="false">Traces</button>
         </li>
         <li class="nav-item" role="presentation">
@@ -30,47 +33,70 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="results" role="tabpanel" aria-labelledby="results-tab">
             <div class="row">
-                <div class="col-md-6 border-right">
-                    {% for user in object.users.all %}
-                        <div class="card mb-3 shadow-sm border">
-                            <div class="card-body">
-                                <div>(User: {{ user.id }})  {{ user.skills }}</div>
-                                <ul class="list-group list-group-flush">
-                                    {% for skill in user.standard_skills.all %}
-                                        <li class="ml-4">{{ skill }}</li>
-                                    {% empty %}
-                                        <li class="list-group-item text-muted">No skills available</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    {% empty %}
-                        <p class="text-center text-muted">No users found.</p>
-                    {% endfor %}
-                </div>
+                {% for user, tasks in recommendations.items %}
+                    <div class="col-12 border mb-2">
 
-                <!-- Test Tasks Column -->
-                <div class="col-md-6">
-                    {% for task in object.tasks.all %}
-                        <div class="card mb-3 shadow-sm border">
-                            <div class="card-body">
-                                <div>{% get_recommendation task object.users.all %}</div>
-                                <div>{{ task.title }} --> {{ task.standard_title }}</div>
-                                <hr>
-                                <div>{{ task.skills }}</div>
-                                <ul class="list-group list-group-flush">
-                                    {% for skill in task.standard_skills.all %}
-                                        <li class="ml-4">{{ skill }}</li>
-                                    {% empty %}
-                                        <li class="list-group-item text-muted">No skills available</li>
+                        <div class="row user">
+                            <div class="col-12"><strong>User: {{ user.id }}</strong></div>
+                            <div class="col-12"><strong>Skills:</strong></div>
+                            <div class="col-12">
+                                <div class="row row-cols-3 g-2">
+                                    {% for s in user.skills %}
+                                        <div class="col pt-1"><div class="border rounded p-2">{{ s }}</div></div>
                                     {% endfor %}
-                                </ul>
+                                </div>
+                            </div>
+                            <div class="col-12"><strong>Standard skills:</strong></div>
+                            <div class="col-12">
+                                <div class="row row-cols-3 g-2">
+                                    {% for s in user.standard_skills.all %}
+                                        <div class="col pt-1"><div class="border rounded p-2">{{ s }}</div></div>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
-                    {% empty %}
-                        <p class="text-center text-muted">No test tasks found.</p>
-                    {% endfor %}
-                </div>
+                        <hr class="w-50" />
+                        <div class="text-center"><strong>----------- RECOMMENDATIONS -----------</strong></div>
+                        {% for task in tasks %}
+                            <div class="row task">
+                                <div class="col-12"><strong>Task: {{ task.id }} | Title: {{ task.title }} | Standard title: {{ task.standard_title }}</strong></div>
+                                <div class="col-12"><strong>Skills:</strong></div>
+                                <div class="col-12">
+                                    <div class="row row-cols-3 g-2">
+                                        {% for s in task.skills %}
+                                            <div class="col pt-1"><div class="border rounded p-2">{{ s }}</div></div>
+                                        {% empty %}
+                                            <div class="col text-center text-muted">No skills.</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col-12"><strong>Standard skills:</strong></div>
+                                <div class="col-12">
+                                    <div class="row row-cols-3 g-2">
+                                        {% for s in task.standard_skills.all %}
+                                            <div class="col pt-1"><div class="border rounded p-2">{{ s }}</div></div>
+                                        {% empty %}
+                                            <div class="col-12 text-center text-muted">No Standard skills.</div>
+                                            {% if task.standard_title %}
+                                                <div class="col-12"><strong>Related skills:</strong></div>
+                                                {% for s in task.standard_title.skills.all %}
+                                                    <div class="col"><div class="border rounded">{{ s }}</div></div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="text-center text-muted">No Recommendations.</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="matching-map" role="tabpanel" aria-labelledby="matching-map-tab">
+            <div class="row">
+                {% prettyjson  recommendations_map initial='parsed' %}
             </div>
         </div>
         <div class="tab-pane fade" id="traces" role="tabpanel" aria-labelledby="traces-tab">

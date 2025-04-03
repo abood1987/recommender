@@ -3,7 +3,7 @@
 {% block navbar %}
     <ol class="breadcrumb bg-light m-0 p-0">
         <li class="breadcrumb-item"><a href="{% url 'test_case_table' %}">Test case table</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ object.name }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ object.name }} ({{ object.users.count }} users & {{ object.tasks.count }} tasks)</li>
     </ol>
     <div>
         <a class="btn btn-primary modal-form" href="{% url 'start_test_case' pk=object.pk %}">Start test case</a>

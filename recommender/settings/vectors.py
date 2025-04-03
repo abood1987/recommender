@@ -1,3 +1,5 @@
+# ----------------------------------
+# EXTRACTORS
 EXTRACTOR_LLM = {
     "class": "recommender_core.extractor.LLMExtractor",
     "configuration": {
@@ -5,7 +7,6 @@ EXTRACTOR_LLM = {
         "description_prompt": "Generate a detailed professional description for the skill: %s.",
     },
 }
-
 EXTRACTOR_NER_JOBBERT = {
     "class": "recommender_core.extractor.NERExtractor",
     "configuration": {
@@ -13,7 +14,6 @@ EXTRACTOR_NER_JOBBERT = {
         "knowledge_model": "jjzha/jobbert_knowledge_extraction",
     },
 }
-
 EXTRACTOR_NER_ESCOXLMR = {
     "class": "recommender_core.extractor.NERExtractor",
     "configuration": {
@@ -21,17 +21,17 @@ EXTRACTOR_NER_ESCOXLMR = {
         "knowledge_model": "jjzha/escoxlmr_knowledge_extraction",
     },
 }
-
 EXTRACTOR_SIMPLE = {
     "class": "recommender_core.extractor.SimpleExtraction",
     "configuration": {},
 }
-
 EXTRACTOR_SPLIT = {
     "class": "recommender_core.extractor.SplitExtraction",
     "configuration": {},
 }
-
+# ---------------------------------------------
+# ---------------------------------------------
+# LLM
 LLM_FLAN_T5 = {
     "class": "recommender_core.llm.FlanT5Model",
     "configuration": {
@@ -39,7 +39,6 @@ LLM_FLAN_T5 = {
         "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\google-flan-t5-large",
     },
 }
-
 LLM_FLAN_T5_FT = {
     "class": "recommender_core.llm.FlanT5Model",
     "configuration": {
@@ -47,12 +46,59 @@ LLM_FLAN_T5_FT = {
         "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\flan-t5-esco",
     },
 }
+# ---------------------------------------------
+# ---------------------------------------------
+# Matchers
+
+MATCHER_BINARY_VECTOR = {
+    # Save the vectors in DB to speed up the process
+    "class": "recommender_core.matcher.BinaryVectorMatcher",
+    "configuration": {
+        "threshold": 0.4,
+        "include_broader": True,
+        "top_k": None,
+    },
+}
+MATCHER_EMBEDDINGS = {
+    # Save the embeddings in DB to speed up the process
+    "class": "recommender_core.matcher.EmbeddingMatcher",
+    "configuration": {
+        "threshold": 0.7,
+        "include_broader": True,
+        "top_k": None,
+    },
+}
+MATCHER_FUZZY = {
+    "class": "recommender_core.matcher.FuzzyMatcher",
+    "configuration": {
+        "threshold": 0.6,
+        "include_broader": True,
+        "fuzzy_threshold": 60,  # [0 - 100]
+        "top_k": None,
+    },
+}
+MATCHER_OVERLAP = {
+    "class": "recommender_core.matcher.OverlapMatcher",
+    "configuration": {
+        "threshold": 0.4,
+        "include_broader": True,
+        "top_k": None,
+    },
+}
+MATCHER_TF_IDF = {
+    "class": "recommender_core.matcher.TFIDFMatcher",
+    "configuration": {
+        "threshold": 0.5,
+        "include_broader": True,
+        "top_k": None,
+    },
+}
 
 
 VECTOR_SETTINGS = {
     # Configuration is passed directly to the model during initialization.
     "max_distance": 0.4,
-    "top_n": 5,
+    "top_k": 5,
     "embeddings": {
         "class": "recommender_core.embeddings.SentenceTransformerModel",
         "configuration": {
@@ -63,4 +109,5 @@ VECTOR_SETTINGS = {
     },
     "llm": LLM_FLAN_T5_FT,
     "extractor": EXTRACTOR_SIMPLE,
+    "matcher": MATCHER_OVERLAP
 }

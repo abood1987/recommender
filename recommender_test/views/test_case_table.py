@@ -14,9 +14,11 @@ from django_tables2 import tables, A, LinkColumn, TemplateColumn
 from django_tables2.views import SingleTableMixin
 
 from recommender.settings import VECTOR_SETTINGS, EXTRACTOR_SIMPLE, EXTRACTOR_NER_JOBBERT, EXTRACTOR_NER_ESCOXLMR, \
-    EXTRACTOR_LLM, LLM_FLAN_T5, LLM_FLAN_T5_FT, EXTRACTOR_SPLIT
+    EXTRACTOR_LLM, LLM_FLAN_T5, LLM_FLAN_T5_FT, EXTRACTOR_SPLIT, MATCHER_BINARY_VECTOR, MATCHER_EMBEDDINGS, \
+    MATCHER_FUZZY, MATCHER_OVERLAP, MATCHER_TF_IDF
 from recommender_core.utils.collector import DataCollector, ClassTracer
-from recommender_core.utils.helper import get_extractor
+from recommender_core.utils.helper import get_extractor, get_matcher
+from recommender_profile.models import TaskProfile, UserProfile
 from recommender_test.forms import TestCaseForm
 from recommender_test.models import TestCase
 
@@ -81,22 +83,36 @@ class StartTestCaseView(BSModalReadView):
     extra_context = {
         "btn_text": "Start",
         "form_title": "Start Test Case",
-        "methods": {
+        "extractor_methods": {
             "simple": "Simple",
             "split": "Split",
             "jobbert": "NER",
             "escoxlmr": "Escoxlmr",
             "flat_t5": "Flat T5",
             "flat_t5_ft": "Flat T5 (fine tuning)"
+        },
+        "matcher_methods": {
+            "binary_vector": "Binary Vector",
+            "embeddings": "Embeddings",
+            "fuzzy": "Fuzzy",
+            "overlap": "Overlap",
+            "tfidf": "TF-IDF"
         }
     }
-    METHODS_MAP = {
-        "simple": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_SIMPLE},
-        "split": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_SPLIT},
-        "jobbert": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_NER_JOBBERT},
-        "escoxlmr": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_NER_ESCOXLMR},
-        "flat_t5": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5},
-        "flat_t5_ft": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5_FT},
+    EXTRACTOR_METHODS_MAP = {
+        "simple": EXTRACTOR_SIMPLE,
+        "split": EXTRACTOR_SPLIT,
+        "jobbert": EXTRACTOR_NER_JOBBERT,
+        "escoxlmr": EXTRACTOR_NER_ESCOXLMR,
+        "flat_t5": {"extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5},
+        "flat_t5_ft": {"extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5_FT},
+    }
+    MATCHER_METHODS_MAP = {
+        "binary_vector": MATCHER_BINARY_VECTOR,
+        "embeddings": MATCHER_EMBEDDINGS,
+        "fuzzy": MATCHER_FUZZY,
+        "overlap": MATCHER_OVERLAP,
+        "tfidf": MATCHER_TF_IDF
     }
 
     def dispatch(self, request, *args, **kwargs):
@@ -106,23 +122,64 @@ class StartTestCaseView(BSModalReadView):
 
     def post(self, request, *args, **kwargs):
         instance = self.get_object()
-        method = request.POST.get("select_method")
-        extractor = get_extractor(json.dumps(self.METHODS_MAP[method]))
+        extractor_configs = self.EXTRACTOR_METHODS_MAP[request.POST.get("extractor_method")]
+        matcher_configs = self.MATCHER_METHODS_MAP[request.POST.get("matcher_method")]
+        threshold_value = request.POST.get("threshold_value")
+        fuzzy_threshold_value = request.POST.get("fuzzy_threshold_value")
+        include_broader = bool(request.POST.get("include_broader", False))
+        top_k_matching = int(request.POST.get("top_k_matching"))
 
+        matcher_configs["configuration"].update({
+            "threshold": float(threshold_value),
+            "fuzzy_threshold": float(fuzzy_threshold_value),
+            "include_broader": include_broader,
+            "top_k": top_k_matching
+        })
+
+        configs = {
+            **VECTOR_SETTINGS,
+            **(extractor_configs if isinstance(extractor_configs, dict) else {"extractor": extractor_configs}),
+            "matcher": matcher_configs
+        }
+        extractor = get_extractor(json.dumps(configs))
+        matcher = get_matcher(json.dumps(configs))
+
+        tasks = instance.tasks.all()
+        users = instance.users.all()
+        # tasks = TaskProfile.objects.filter(testcase__in=list(TestCase.objects.values_list("id", flat=True)))
+        # users = UserProfile.objects.filter(testcase__in=list(TestCase.objects.values_list("id", flat=True)))
         with ThreadPoolExecutor() as executor:
             # Run user and task processing in parallel
             futures = []
-            for u in instance.users.all():
+            for u in users:
                 futures.append(executor.submit(u.generate_standard_skills_and_embedding, extractor))
 
-            for s in instance.tasks.all():
+            for s in tasks:
                 futures.append(executor.submit(s.generate_standard_skills_and_embedding, extractor))
 
             for future in futures: # Wait for all tasks to finish
                 future.result()
 
+        recommendations = matcher.get_recommendations(users, tasks)
         self.template_name = "recommender_test/test_case_results.html"
+        recommendations_dict = {
+            users.get(id=u_id): tasks.filter(id__in=t_ids)
+            for u_id, t_ids in recommendations.items()
+        }
         return self.render_to_response({
             "object": instance,
-            "traces": DataCollector().data
+            "traces": DataCollector().data,
+            "recommendations": recommendations_dict,
+            "recommendations_map": {
+                "Users count": len(recommendations_dict.keys()),
+                "Tasks count": sum(qs.count() for qs in recommendations_dict.values()),
+                "Matched users count": len([u for u, t in recommendations_dict.items() if t.count() > 0]),
+                "Matched tasks count": len({task.id for qs in recommendations_dict.values() for task in qs}),
+                "Recommendations": {
+                    f"User: {user.id}": {
+                        "ids": list(tasks.values_list("id", flat=True)),
+                        "titles": list(tasks.values_list("title", flat=True))
+                    } for user, tasks in recommendations_dict.items() if tasks.exists()
+                }
+            },
         })

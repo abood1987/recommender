@@ -7,7 +7,6 @@ from recommender_core.matcher.base import MatcherBase
 
 
 class TFIDFMatcher(MatcherBase):
-
     def _get_recommendations(self, users_df: pd.DataFrame, tasks_df: pd.DataFrame) -> dict:
         def list_to_text(lst):
             return " ".join(lst)
@@ -19,8 +18,17 @@ class TFIDFMatcher(MatcherBase):
         job_tfidf = vectorizer.transform(tasks_df["standard_skills"].apply(list_to_text))
         sim_matrix_tfidf = cosine_similarity(user_tfidf, job_tfidf)
 
-        users_df['matched_jobs'] = [
-            list(tasks_df.loc[np.where(row >= self.threshold)[0], "id"])
-            for row in sim_matrix_tfidf
-        ]
+        task_ids = tasks_df["id"].tolist()
+
+        def get_matches(row):
+            indices = np.where(row >= self.threshold)[0]
+            sorted_indices = indices[np.argsort(row[indices])[::-1][:self.top_k]]
+            return [task_ids[i] for i in sorted_indices]
+
+        users_df["matched_jobs"] = [get_matches(row) for row in sim_matrix_tfidf]
+        #
+        # users_df['matched_jobs'] = [
+        #     list(tasks_df.iloc[np.where(row >= self.threshold)[0], "id"])
+        #     for row in sim_matrix_tfidf
+        # ]
         return users_df.set_index("id")["matched_jobs"].to_dict()

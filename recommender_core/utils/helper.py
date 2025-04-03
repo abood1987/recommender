@@ -5,6 +5,7 @@ from recommender.settings import VECTOR_SETTINGS
 from recommender_core.embeddings.base import EmbeddingModelBase
 from recommender_core.extractor.base import ExtractorBase
 from recommender_core.llm.base import LLMModelBase
+from recommender_core.matcher.base import MatcherBase
 
 
 @cache
@@ -46,6 +47,26 @@ def get_extractor(settings=None) -> ExtractorBase:
 
     settings = json.loads(settings) if settings else VECTOR_SETTINGS
     extractor_settings = settings["extractor"]
+    model_cls = extractor_settings["class"]
+    if isinstance(model_cls, str):
+        model_cls = import_string(model_cls)
+    model_config = extractor_settings["configuration"]
+    return model_cls(**{
+        **model_config,
+        "embedding_model": get_embedding_model(json.dumps(settings)),
+        "llm_model": get_llm_model(json.dumps(settings)),
+    })
+
+
+@cache
+def get_matcher(settings=None) -> MatcherBase:
+    """
+    Get matcher model, as specified in the settings.
+    :return: matcher model instance.
+    """
+
+    settings = json.loads(settings) if settings else VECTOR_SETTINGS
+    extractor_settings = settings["matcher"]
     model_cls = extractor_settings["class"]
     if isinstance(model_cls, str):
         model_cls = import_string(model_cls)
