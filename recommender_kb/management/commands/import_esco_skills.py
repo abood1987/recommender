@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from django.core import checks
 from django.core.management.base import BaseCommand, CommandError
 from nltk.sem.chat80 import borders
 
@@ -13,6 +14,10 @@ from recommender_kb.models import (
 class Command(BaseCommand):
     help = "Import ESCO skills & occupations from csv"
     requires_system_checks = []
+
+    def check(self, app_configs=None, tags=None, display_num_errors=False, include_deployment_checks=False,
+              fail_level=checks.ERROR, databases=None):
+        self.stdout.write(self.style.WARNING("'Import skills & occupations from csv': SKIPPING SYSTEM CHECKS!\n"))
 
     def add_arguments(self, parser):
         parser.add_argument("--path", type=str, required=True, help="Container path where ISCO CSV files are located.")
