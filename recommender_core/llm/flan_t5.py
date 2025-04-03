@@ -9,18 +9,18 @@ from recommender_core.utils.collector import ClassTracer
 class FlanT5Model(LLMModelBase):
     @ClassTracer.exclude
     def _get_model(self):
-        if not self.model_path:
-            return (
-                T5Tokenizer.from_pretrained(self.model_name),
-                T5ForConditionalGeneration.from_pretrained(self.model_name)
-            )
-
-        path = Path(self.model_path)
-        if path.exists() and any(path.iterdir()):
-            return (
-                T5Tokenizer.from_pretrained(self.model_path),
-                T5ForConditionalGeneration.from_pretrained(self.model_path)
-            )
+        if self.model_path:
+            path = Path(self.model_path)
+            if path.exists() and any(path.iterdir()):
+                model_name = self.model_path
+            else:
+                model_name = self.model_name
+        else:
+            model_name = self.model_name
+        return (
+            T5Tokenizer.from_pretrained(model_name),
+            T5ForConditionalGeneration.from_pretrained(model_name)
+        )
 
     def prompt(self, prompt: str) -> str:
         inputs = self.tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True)
