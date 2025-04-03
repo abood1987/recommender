@@ -17,6 +17,11 @@ numpy==2.2.1
 kagglehub==0.3.6
 transformers==4.49.0
 SentencePiece==0.2.0
+nltk==3.9.1
+scikit-learn==1.6.1
+evaluate==0.4.3
+datasets==3.3.2
+RapidFuzz==3.12.2
 
 # test app
 django-bootstrap-modal-forms==3.0.5
@@ -24,4 +29,3 @@ django-tables2==2.7.5
 django-bootstrap4==24.4
 django-prettyjson==0.4.1
 django-jsonform==2.23.2
-
