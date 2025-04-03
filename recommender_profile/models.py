@@ -22,7 +22,7 @@ class Address(models.Model):
 
 class UserProfileManager(models.Manager):
     def active(self):
-        return self.get_queryset().filter(is_active=True)
+        return self.get_queryset().filter(is_available=True)
 
 
 class UserProfile(BaseVectorModel):
@@ -61,7 +61,7 @@ class UserProfile(BaseVectorModel):
 
 class TaskProfileManager(models.Manager):
     def active(self):
-        return self.get_queryset().filter(is_active=True)
+        return self.get_queryset().filter(is_available=True)
 
 
 class TaskProfile(BaseVectorModel):
@@ -81,7 +81,7 @@ class TaskProfile(BaseVectorModel):
 
     def generate_standard_skills_and_embedding(self, extractor: ExtractorBase|None = None):
         extractor = extractor or get_extractor()
-        self.standard_title = extractor.extract_occupation(self.title)
+        self.standard_title = extractor.extract_occupation(self.title).first()
         self.standard_skills.set(extractor.extract_skills(self.skills))
         self.embedding = extractor.embedding_model.encode(
             ", ".join(list(self.standard_skills.values_list("label", flat=True)) or []))

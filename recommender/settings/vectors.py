@@ -27,6 +27,11 @@ EXTRACTOR_SIMPLE = {
     "configuration": {},
 }
 
+EXTRACTOR_SPLIT = {
+    "class": "recommender_core.extractor.SplitExtraction",
+    "configuration": {},
+}
+
 LLM_FLAN_T5 = {
     "class": "recommender_core.llm.FlanT5Model",
     "configuration": {
@@ -38,29 +43,24 @@ LLM_FLAN_T5 = {
 LLM_FLAN_T5_FT = {
     "class": "recommender_core.llm.FlanT5Model",
     "configuration": {
-        "model_name": "google/flan-t5-large",
-        "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\google-flan-t5-esco",
+        "model_name": "abd1987/esco-flan-t5-large",
+        "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\flan-t5-esco",
     },
 }
 
 
 VECTOR_SETTINGS = {
     # Configuration is passed directly to the model during initialization.
-    "max_distance": 0.45,
+    "max_distance": 0.4,
+    "top_n": 5,
     "embeddings": {
         "class": "recommender_core.embeddings.SentenceTransformerModel",
         "configuration": {
             # "model_name": "paraphrase-mpnet-base-v2",
             "model_name": "abd1987/esco-context-skill-extraction",
-            "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\paraphrase-mpnet-base-v2"
+            "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\esco-embeddings"
         },
     },
-    "llm": {
-        "class": "recommender_core.llm.FlanT5Model",
-        "configuration": {
-            "model_name": "google/flan-t5-large",
-            "model_path": "C:\\Users\\abd19\\PycharmProjects\\recommender\\data\\models\\google-flan-t5-esco",
-        },
-    },
+    "llm": LLM_FLAN_T5_FT,
     "extractor": EXTRACTOR_SIMPLE,
 }

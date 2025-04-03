@@ -14,7 +14,7 @@ from django_tables2 import tables, A, LinkColumn, TemplateColumn
 from django_tables2.views import SingleTableMixin
 
 from recommender.settings import VECTOR_SETTINGS, EXTRACTOR_SIMPLE, EXTRACTOR_NER_JOBBERT, EXTRACTOR_NER_ESCOXLMR, \
-    EXTRACTOR_LLM, LLM_FLAN_T5, LLM_FLAN_T5_FT
+    EXTRACTOR_LLM, LLM_FLAN_T5, LLM_FLAN_T5_FT, EXTRACTOR_SPLIT
 from recommender_core.utils.collector import DataCollector, ClassTracer
 from recommender_core.utils.helper import get_extractor
 from recommender_test.forms import TestCaseForm
@@ -82,15 +82,17 @@ class StartTestCaseView(BSModalReadView):
         "btn_text": "Start",
         "form_title": "Start Test Case",
         "methods": {
-            "simple_match": "Simple match",
-            "jobbert": "Jobbert",
+            "simple": "Simple",
+            "split": "Split",
+            "jobbert": "NER",
             "escoxlmr": "Escoxlmr",
             "flat_t5": "Flat T5",
             "flat_t5_ft": "Flat T5 (fine tuning)"
         }
     }
     METHODS_MAP = {
-        "simple_match": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_SIMPLE},
+        "simple": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_SIMPLE},
+        "split": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_SPLIT},
         "jobbert": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_NER_JOBBERT},
         "escoxlmr": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_NER_ESCOXLMR},
         "flat_t5": {**VECTOR_SETTINGS, "extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5},
@@ -105,8 +107,6 @@ class StartTestCaseView(BSModalReadView):
     def post(self, request, *args, **kwargs):
         instance = self.get_object()
         method = request.POST.get("select_method")
-        print(method)
-        print(self.METHODS_MAP[method])
         extractor = get_extractor(json.dumps(self.METHODS_MAP[method]))
 
         with ThreadPoolExecutor() as executor:
