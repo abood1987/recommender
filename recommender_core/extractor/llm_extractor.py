@@ -19,6 +19,3 @@ class LLMExtractor(ExtractorBase):
                 description = self.llm.prompt(self.description_prompt % skill)
                 standard_skills.append(self.match_with_kb(self.skill_kb, description))
         return list(filter(None, standard_skills))
-
-    def extract_occupation(self, user_input: str):
-        return self.match_with_kb(self.occupation_kb, user_input)

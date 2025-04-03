@@ -19,10 +19,6 @@ class NERExtractor(ExtractorBase):
                 standard_skills.append(self.match_with_kb(self.skill_kb, skill))
         return list(filter(None, standard_skills))
 
-    def extract_occupation(self, user_input: str):
-        # return self.match_with_kb(self.occupation_kb, ", ".join(self.ner(user_input)))
-        return self.match_with_kb(self.occupation_kb, user_input)
-
     def aggregate_span(self, results):
         new_results = []
         current_result = results[0]
@@ -54,4 +50,4 @@ class NERExtractor(ExtractorBase):
         if len(output_skills) > 0: output_skills = self.aggregate_span(output_skills)
         if len(output_knowledge) > 0: output_knowledge = self.aggregate_span(output_knowledge)
         res = [*output_skills, *output_knowledge]
-        return [d["word"] for d in res]
+        return [d["word"] for d in res] + [text]
