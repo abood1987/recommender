@@ -2,7 +2,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import CreateModelMixin
 
 from recommender_profile.models import TaskProfile
-from recommender_rest.serializer import TaskProfileSerializer
+from recommender_rest.serializers import TaskProfileSerializer
 
 
 class TaskProfileView(CreateModelMixin, RetrieveUpdateDestroyAPIView):

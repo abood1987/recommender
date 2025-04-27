@@ -2,7 +2,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import CreateModelMixin
 
 from recommender_profile.models import UserProfile
-from recommender_rest.serializer import UserProfileSerializer
+from recommender_rest.serializers import UserProfileSerializer
 
 
 class UserProfileView(CreateModelMixin, RetrieveUpdateDestroyAPIView):
