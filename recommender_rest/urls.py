@@ -4,8 +4,10 @@ from recommender_rest import views
 
 urlpatterns_v1 = [
     # path("token-auth/", views.ObtainAuthToken.as_view()),
-    path("task/profile/", views.TaskProfileCreateView.as_view(), name="create_task_profile"),
-    path("user/profile/", views.UserProfileCreateView.as_view(), name="create_user_profile"),
+    path("task/profile", views.TaskProfileView.as_view()),
+    path("task/profile/<int:id>/", views.TaskProfileView.as_view()),
+    path("user/profile/", views.UserProfileView.as_view()),
+    path("user/profile/<int:id>/", views.UserProfileView.as_view()),
 ]
 
 urlpatterns = [

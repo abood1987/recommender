@@ -171,6 +171,10 @@ class StartTestCaseView(BSModalReadView):
             "traces": DataCollector().data,
             "recommendations": recommendations_dict,
             "recommendations_map": {
+                "threshold": float(threshold_value),
+                "fuzzy_threshold": float(fuzzy_threshold_value),
+                "include_broader": include_broader,
+                "top_k": top_k_matching,
                 "Users count": len(recommendations_dict.keys()),
                 "Tasks count": sum(qs.count() for qs in recommendations_dict.values()),
                 "Matched users count": len([u for u, t in recommendations_dict.items() if t.count() > 0]),

@@ -5,6 +5,7 @@ from recommender_profile.models import TaskProfile
 from recommender_rest.serializer import TaskProfileSerializer
 
 
-class TaskProfileCreateView(CreateModelMixin, RetrieveUpdateDestroyAPIView):
+class TaskProfileView(CreateModelMixin, RetrieveUpdateDestroyAPIView):
+    lookup_field = "external_id"
     queryset = TaskProfile.objects.all()
     serializer_class = TaskProfileSerializer

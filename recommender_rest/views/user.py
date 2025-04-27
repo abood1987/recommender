@@ -5,6 +5,7 @@ from recommender_profile.models import UserProfile
 from recommender_rest.serializer import UserProfileSerializer
 
 
-class UserProfileCreateView(CreateModelMixin, RetrieveUpdateDestroyAPIView):
+class UserProfileView(CreateModelMixin, RetrieveUpdateDestroyAPIView):
+    lookup_field = "external_id"
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
