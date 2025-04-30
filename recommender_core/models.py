@@ -5,7 +5,15 @@ from recommender.settings import VECTOR_SETTINGS
 from recommender_core.utils.helper import get_embedding_model
 
 
-class BaseVectorModel(models.Model):
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class BaseVectorModel(BaseModel):
     embedding = VectorField(dimensions=768, null=True)
 
     class Meta:

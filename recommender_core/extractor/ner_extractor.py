@@ -16,7 +16,7 @@ class NERExtractor(ExtractorBase):
 
         for user_input in user_inputs:
             for skill in self.ner(user_input):
-                standard_skills.append(self.match_with_kb(self.skill_kb, skill))
+                standard_skills.extend(list(self.match_with_kb(self.skill_kb, skill)))
         return list(filter(None, standard_skills))
 
     def aggregate_span(self, results):

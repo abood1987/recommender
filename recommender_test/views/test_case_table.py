@@ -13,9 +13,10 @@ from django_filters.views import FilterView
 from django_tables2 import tables, A, LinkColumn, TemplateColumn
 from django_tables2.views import SingleTableMixin
 
-from recommender.settings import VECTOR_SETTINGS, EXTRACTOR_SIMPLE, EXTRACTOR_NER_JOBBERT, EXTRACTOR_NER_ESCOXLMR, \
+from recommender.settings import VECTOR_SETTINGS, EXTRACTOR_EMBEDDING_SIMILARITY, EXTRACTOR_NER_JOBBERT, \
+    EXTRACTOR_NER_ESCOXLMR, \
     EXTRACTOR_LLM, LLM_FLAN_T5, LLM_FLAN_T5_FT, EXTRACTOR_SPLIT, MATCHER_BINARY_VECTOR, MATCHER_EMBEDDINGS, \
-    MATCHER_FUZZY, MATCHER_OVERLAP, MATCHER_TF_IDF
+    MATCHER_FUZZY, MATCHER_OVERLAP, MATCHER_TF_IDF, EXTRACTOR_HYBRID
 from recommender_core.utils.collector import DataCollector, ClassTracer
 from recommender_core.utils.helper import get_extractor, get_matcher
 from recommender_profile.models import TaskProfile, UserProfile
@@ -89,7 +90,8 @@ class StartTestCaseView(BSModalReadView):
             "jobbert": "NER",
             "escoxlmr": "Escoxlmr",
             "flat_t5": "Flat T5",
-            "flat_t5_ft": "Flat T5 (fine tuning)"
+            "flat_t5_ft": "Flat T5 (fine tuning)",
+            "hybrid": "Hybrid (Simple + LLM)"
         },
         "matcher_methods": {
             "binary_vector": "Binary Vector",
@@ -100,12 +102,13 @@ class StartTestCaseView(BSModalReadView):
         }
     }
     EXTRACTOR_METHODS_MAP = {
-        "simple": EXTRACTOR_SIMPLE,
+        "simple": EXTRACTOR_EMBEDDING_SIMILARITY,
         "split": EXTRACTOR_SPLIT,
         "jobbert": EXTRACTOR_NER_JOBBERT,
         "escoxlmr": EXTRACTOR_NER_ESCOXLMR,
         "flat_t5": {"extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5},
         "flat_t5_ft": {"extractor": EXTRACTOR_LLM, "llm": LLM_FLAN_T5_FT},
+        "hybrid": EXTRACTOR_HYBRID
     }
     MATCHER_METHODS_MAP = {
         "binary_vector": MATCHER_BINARY_VECTOR,

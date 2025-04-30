@@ -1,4 +1,7 @@
 from abc import ABC
+
+from django.db.models import QuerySet
+
 from recommender_core.embeddings.base import EmbeddingModelBase
 from recommender_core.utils.collector import DataCollector, ClassTracer
 from recommender_core.utils.singleton import Singleton
@@ -24,10 +27,11 @@ class ExtractorBase(Singleton, ABC, metaclass=ClassTracer):
         Match instance description with existing instances in the knowledge base using cosine similarity.
         """
         return model.search(skill_description)
-        # return matched_objects if matched_objects.exists() else None
 
     def extract_skills(self, user_inputs: str | list[str]) -> list:
+        """Extract a list of skills from a user input or list of inputs."""
         raise NotImplementedError
 
     def extract_occupation(self, user_input: str):
+        """Extract the occupation from a given user input."""
         return self.match_with_kb(self.occupation_kb, user_input)

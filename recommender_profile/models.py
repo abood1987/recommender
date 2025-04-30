@@ -5,12 +5,12 @@ from django.db.models.functions import Coalesce
 from pgvector.django import HnswIndex
 
 from recommender_core.extractor.base import ExtractorBase
-from recommender_core.models import BaseVectorModel
+from recommender_core.models import BaseVectorModel, BaseModel
 from recommender_core.utils.helper import get_extractor
 from recommender_kb.models import Skill, Occupation
 
 
-class Address(models.Model):
+class Address(BaseModel):
     country = models.CharField(max_length=100, default="Austria")
     state = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
@@ -35,6 +35,7 @@ class UserProfile(BaseVectorModel):
 
     is_available = models.BooleanField(default=True)
     address = models.ForeignKey(Address, on_delete=models.PROTECT)
+    recommendations = models.ManyToManyField("TaskProfile", through="Recommendation",  related_name="recommendations")
 
     def generate_standard_skills_and_embedding(self, extractor: ExtractorBase|None = None):
         extractor = extractor or get_extractor()
@@ -87,33 +88,6 @@ class TaskProfile(BaseVectorModel):
             ", ".join(list(self.standard_skills.values_list("label", flat=True)) or []))
         self.save()
 
-    # def get_recommendations(self):
-    #     return UserProfile.objects.filter(
-    #         standard_skills__overlap=self.standard_skills
-    #     ).annotate(
-    #         overlap_count=Coalesce(
-    #             models.Count(
-    #                 "standard_skills",
-    #                 filter=models.Q(standard_skills__overlap=self.standard_skills)
-    #             ), models.Value(0, output_field=models.IntegerField())
-    #         )
-    #     ).order_by("-overlap_count")
-    def get_recommendations(self, user_profiles: QuerySet[UserProfile] = None):
-        user_profiles = user_profiles or UserProfile.objects.all()
-        def _get_recommendations(tasks_filter):
-            return user_profiles.filter(**tasks_filter).annotate(
-                overlap_count=Coalesce(
-                    models.Count(
-                        "standard_skills",
-                        filter=models.Q(standard_skills__in=self.standard_skills.all())
-                    ), models.Value(0, output_field=models.IntegerField())
-                )
-            ).order_by("-overlap_count")
-        recommendations = _get_recommendations({"standard_skills__in": self.standard_skills.all()})
-        if not recommendations.exists():
-            return _get_recommendations({"standard_skills__in": self.standard_title.skills.all()})
-        return recommendations
-
     class Meta:
         indexes = [
             HnswIndex(
@@ -127,3 +101,8 @@ class TaskProfile(BaseVectorModel):
 
     def __str__(self):
         return f"{self.title}"
+
+
+class Recommendation(BaseModel):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    task_profile = models.ForeignKey(TaskProfile, on_delete=models.CASCADE)

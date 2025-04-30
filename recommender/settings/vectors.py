@@ -5,6 +5,15 @@ EXTRACTOR_LLM = {
     "configuration": {
         "extract_prompt": "Extract professional skills from the following text: %s. Return only skills, comma-separated.",
         "description_prompt": "Generate a detailed professional description for the skill: %s.",
+        "occupation_extract_prompt": "Extract and describe a single professional occupation from the following text: %s. Return only a short, formal description of the occupation.",
+    },
+}
+EXTRACTOR_HYBRID = {
+    "class": "recommender_core.extractor.HybridExtractor",
+    "configuration": {
+        "extract_prompt": "Extract professional skills from the following text: %s. Return only skills, comma-separated.",
+        "description_prompt": "Generate a detailed professional description for the skill: %s.",
+        "occupation_extract_prompt": "Extract and describe a single professional occupation from the following text: %s. Return only a short, formal description of the occupation.",
     },
 }
 EXTRACTOR_NER_JOBBERT = {
@@ -21,8 +30,8 @@ EXTRACTOR_NER_ESCOXLMR = {
         "knowledge_model": "jjzha/escoxlmr_knowledge_extraction",
     },
 }
-EXTRACTOR_SIMPLE = {
-    "class": "recommender_core.extractor.SimpleExtraction",
+EXTRACTOR_EMBEDDING_SIMILARITY = {
+    "class": "recommender_core.extractor.EmbeddingSimilarityExtractor ",
     "configuration": {},
 }
 EXTRACTOR_SPLIT = {
@@ -108,6 +117,6 @@ VECTOR_SETTINGS = {
         },
     },
     "llm": LLM_FLAN_T5_FT,
-    "extractor": EXTRACTOR_SIMPLE,
+    "extractor": EXTRACTOR_HYBRID,
     "matcher": MATCHER_OVERLAP
 }

@@ -15,5 +15,5 @@ class SplitExtraction(ExtractorBase):
         for user_input in user_inputs:
             skills_list = self.split_text_statements(user_input)
             for skill in skills_list:
-                standard_skills.append(self.match_with_kb(self.skill_kb, skill))
+                standard_skills.extend(list(self.match_with_kb(self.skill_kb, skill)))
         return list(filter(None, standard_skills))
