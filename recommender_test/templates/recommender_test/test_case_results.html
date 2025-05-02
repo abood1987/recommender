@@ -25,9 +25,6 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="traces-tab" data-toggle="tab" data-target="#traces" type="button" role="tab" aria-controls="traces" aria-selected="false">Traces</button>
         </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
-        </li>
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="results" role="tabpanel" aria-labelledby="results-tab">
@@ -103,7 +100,6 @@
                 {% prettyjson  traces initial='parsed' %}
             </div>
         </div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
     </div>
 </div>
 {% endblock %}
