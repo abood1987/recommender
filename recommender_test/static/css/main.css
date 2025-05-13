@@ -1,0 +1,18 @@
+/* Hide spinner by default */
+#form-spinner {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+/* Show spinner when submit button is disabled */
+.modal-submit-btn:disabled + #form-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+

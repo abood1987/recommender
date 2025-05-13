@@ -4,16 +4,27 @@ $(document).ready(function() {
     });
     $(".modal-form").each(function () {
         $(this).modalForm({
-            formURL: $(this).attr("href")
+            formURL: $(this).attr("href"),
+            submitBtn: ".modal-submit-btn"
         });
     });
-    $(".modal").on("show.bs.modal", function (event) {
-        formset.init();
 
-        $(".rang-input").each(function () {
-            $(this).closest(".form-group").find(".rang-value").html(this.value);
-        }).on("input", function () {
-            $(this).closest(".form-group").find(".rang-value").html(this.value);
+  // // Optional: hide spinner when modal is closed
+  //   $('#modal').on('hidden.bs.modal', function () {
+  //       $('#form-spinner').hide();
+  //   });
+
+    $(".modal")
+        .on("show.bs.modal", function (event) {
+            formset.init();
+
+            $(".rang-input").each(function () {
+                $(this).closest(".form-group").find(".rang-value").html(this.value);
+            }).on("input", function () {
+                $(this).closest(".form-group").find(".rang-value").html(this.value);
+            });
+        })
+        .on("submit", ".modal-content form", function () {
+            $("#form-spinner").show();
         });
-    });
 });
